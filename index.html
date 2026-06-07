@@ -2,115 +2,78 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tower Rush Pro</title>
     <style>
-        body { margin: 0; background: #000; overflow: hidden; display: flex; justify-content: center; height: 100vh; font-family: sans-serif; }
-        #app { position: relative; width: 100vw; max-width: 450px; height: 100vh; background: linear-gradient(#87CEEB, #E0F6FF); }
+        body { margin: 0; background: #5db6d2; overflow: hidden; display: flex; justify-content: center; height: 100vh; }
+        #app { position: relative; width: 100vw; max-width: 450px; height: 100vh; background: linear-gradient(#5db6d2, #a1e2f7); }
         canvas { display: block; width: 100%; height: 100%; }
-        #score { position: absolute; top: 40px; width: 100%; text-align: center; color: white; font-size: 3.5rem; font-weight: 800; text-shadow: 2px 2px 8px rgba(0,0,0,0.3); pointer-events: none; }
-        #buildBtn { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: 85%; height: 80px; background: #FFD700; border: none; border-radius: 20px; color: #7B3F00; font-size: 30px; font-weight: 900; box-shadow: 0 8px #B8860B; cursor: pointer; z-index: 100; }
-        #buildBtn:active { transform: translateX(-50%) translateY(6px); box-shadow: 0 2px #B8860B; }
-        #badgeAlert { position: absolute; top: 120px; width: 100%; text-align: center; color: #FFD700; font-size: 1.8rem; font-weight: bold; pointer-events: none; opacity: 0; transition: 0.5s; }
+        /* Industrial Build Button */
+        #buildContainer { position: absolute; bottom: 0; width: 100%; height: 110px; background: #333; display: flex; justify-content: center; align-items: center; border-top: 6px solid #222; }
+        #buildBtn { width: 92%; height: 75px; background: #e5b02b; border: 4px solid #fff; border-radius: 8px; color: #fff; font-size: 30px; font-weight: 900; text-shadow: 2px 2px #000; cursor: pointer; letter-spacing: 2px; }
+        #buildBtn:active { transform: translateY(4px); }
     </style>
 </head>
 <body>
 
 <div id="app">
     <canvas id="c"></canvas>
-    <div id="score">0</div>
-    <div id="badgeAlert"></div>
-    <button id="buildBtn" onclick="game.build()">BUILD</button>
+    <div id="buildContainer">
+        <button id="buildBtn" onclick="game.build()">BUILD</button>
+    </div>
 </div>
 
 <script>
     const canvas = document.getElementById('c');
     const ctx = canvas.getContext('2d');
-    canvas.width = 450; canvas.height = 800;
+    canvas.width = 450; canvas.height = 700;
+
+    // Replace this with your high-res building sprite
+    const buildingImg = new Image();
+    buildingImg.src = 'https://i.imgur.com/YOUR_IMAGE_LINK.png'; 
 
     class Game {
         constructor() {
-            this.floors = [{x: 175, y: 650}];
-            this.active = {x: 0, y: 550, speed: 5, dir: 1};
+            this.floors = [{x: 125, y: 550}];
+            this.active = {x: 0, y: 450, speed: 5, dir: 1};
             this.score = 0;
             this.cameraY = 0;
-            this.running = true;
-        }
-
-        drawBackground() {
-            // Static Cityscape (Side Buildings)
-            ctx.fillStyle = "#4A6E8A";
-            ctx.fillRect(20, 550, 90, 250); // Left Building
-            ctx.fillRect(340, 580, 90, 220); // Right Building
-            
-            // Grass
-            ctx.fillStyle = "#27AE60";
-            ctx.fillRect(0, 750, 450, 50);
-        }
-
-        drawBlock(x, y) {
-            // Front-facing Office Texture
-            ctx.fillStyle = "#F0F8FF"; // Glass Blue-White
-            ctx.fillRect(x, y, 100, 100);
-            ctx.strokeStyle = "#87CEFA"; ctx.lineWidth = 3;
-            ctx.strokeRect(x, y, 100, 100);
-            
-            // Windows
-            ctx.fillStyle = "#B0E0E6";
-            for(let i=15; i<90; i+=30) {
-                for(let j=15; j<90; j+=30) {
-                    ctx.fillRect(x + i, y + j, 20, 20);
-                }
-            }
         }
 
         draw() {
-            ctx.clearRect(0,0,450,800);
+            ctx.clearRect(0, 0, 450, 700);
             ctx.save();
             ctx.translate(0, this.cameraY);
             
-            this.drawBackground();
-            this.floors.forEach(f => this.drawBlock(f.x, f.y));
-            this.drawBlock(this.active.x, this.active.y);
+            this.floors.forEach(f => ctx.drawImage(buildingImg, f.x, f.y, 200, 100));
+            ctx.drawImage(buildingImg, this.active.x, this.active.y, 200, 100);
             
             ctx.restore();
             
-            if(this.running) {
-                this.active.x += this.active.speed * this.active.dir;
-                if(this.active.x > 350 || this.active.x < 0) this.active.dir *= -1;
-                requestAnimationFrame(() => this.draw());
-            }
+            this.active.x += this.active.speed * this.active.dir;
+            if(this.active.x > 250 || this.active.x < 0) this.active.dir *= -1;
+            requestAnimationFrame(() => this.draw());
         }
 
         build() {
-            if(!this.running) return;
             let last = this.floors[this.floors.length-1];
-            if(Math.abs(this.active.x - last.x) < 25) {
-                this.floors.push({x: last.x, y: this.active.y});
+            // LOOSER PHYSICS: 40% tolerance (80px overlap allowed)
+            let diff = Math.abs(this.active.x - last.x);
+            
+            if(diff < 80) { 
+                this.floors.push({x: this.active.x, y: this.active.y});
                 this.active.y -= 100;
-                this.score++;
                 this.cameraY += 100;
-                document.getElementById('score').innerText = this.score;
-                this.checkBadges();
+                this.score++;
             } else {
-                this.running = false;
-                alert("Game Over! Score: " + this.score);
+                alert("Building Destroyed! Score: " + this.score);
                 location.reload();
-            }
-        }
-
-        checkBadges() {
-            let alertEl = document.getElementById('badgeAlert');
-            if(this.score === 50 || this.score === 100 || this.score === 1000) {
-                alertEl.innerText = "🏆 NEW BADGE EARNED!";
-                alertEl.style.opacity = "1";
-                setTimeout(() => { alertEl.style.opacity = "0"; }, 2000);
             }
         }
     }
 
     const game = new Game();
-    game.draw();
+    buildingImg.onload = () => game.draw();
 </script>
 </body>
 </html>
