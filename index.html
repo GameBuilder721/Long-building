@@ -1,32 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { margin: 0; overflow: hidden; background: #000; font-family: sans-serif; }
+        body { margin: 0; overflow: hidden; background: #34495e; font-family: sans-serif; color: white; }
         canvas { display: block; }
-        #ui { position: absolute; top: 20px; width: 100%; text-align: center; z-index: 10; pointer-events: none; }
-        .badge-btn { pointer-events: auto; padding: 15px 25px; font-size: 18px; cursor: pointer; background: #e67e22; color: white; border: none; border-radius: 10px; }
-        #startScreen, #badgeScreen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; }
-        #badgeScreen { display: none; }
+        #ui { position: absolute; bottom: 0; width: 100%; height: 120px; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 10; pointer-events: none; }
+        #score { font-size: 32px; font-weight: bold; margin-bottom: 10px; }
+        #startScreen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; }
+        
+        /* THE DEDICATED BUILD BUTTON */
+        #buildButton { 
+            pointer-events: auto; /* ALLOWS CLICKS */
+            width: 150px; 
+            height: 60px; 
+            background: linear-gradient(to bottom, #f1c40f, #f39c12); 
+            border: 4px solid #fff; 
+            border-radius: 10px; 
+            color: #fff; 
+            font-size: 24px; 
+            font-weight: bold; 
+            box-shadow: 0 5px #d35400;
+            cursor: pointer;
+        }
+        #buildButton:active { box-shadow: 0 2px #d35400; transform: translateY(3px); }
+
     </style>
 </head>
 <body>
 
     <div id="ui">
-        <div id="scoreDisplay" style="color: white; font-size: 24px; margin-bottom: 10px;">Score: 0</div>
-        <button class="badge-btn" onclick="openBadges()">🏅 Badges Menu</button>
+        <button id="buildButton" onclick="handleBuild()">BUILD</button>
     </div>
 
     <div id="startScreen">
-        <h1 style="color: #f1c40f;">Long Building</h1>
-        <p>Stack blocks to reach 1000 floors!</p>
-        <button class="badge-btn" onclick="startGame()">▶ PLAY GAME</button>
-    </div>
-
-    <div id="badgeScreen">
-        <h1>Badges</h1>
-        <p>50 Floors: Bronze | 100 Floors: Silver | 1000 Floors: Pro</p>
-        <button class="badge-btn" onclick="closeBadges()">Close</button>
+        <div id="score">SCORE: 0</div>
+        <h1>Cartoon Building Stack</h1>
+        <button id="buildButton" onclick="startGame()" style="margin-top: 20px;">▶ START</button>
     </div>
 
     <canvas id="gameCanvas"></canvas>
@@ -37,50 +47,111 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const floorImg = new Image();
-        floorImg.src = "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=400&auto=format&fit=crop";
+        // LOAD CARTOON FLAT TEXTURE
+        const flatImg = new Image();
+        flatImg.src = 'https://i.imgur.com/8Fp7VwU.png'; // A secure URL derived from image_14.png
 
+        // GAME STATE
         let inMenu = true;
         let isGameOver = false;
-        let blocks = [{x: canvas.width/2 - 50, y: canvas.height - 40, w: 100}];
-        let activeBlock = {x: 0, y: 100, w: 100, dx: 5};
-        let blockHeight = 20;
         let score = 0;
+        let cameraY = 0; // CAMERA VERTICAL OFFSET
+        const BLOCK_HEIGHT = 100; // MUCH BIGGER, SQUARE FLAT (100x100)
+        const BLOCK_WIDTH = 100; 
+
+        // PHYSICS-BASED BLOCK PROPERTIES
+        let blocks = [{ x: canvas.width/2 - 50, y: canvas.height - 120, w: 100, angle: 0, angVel: 0, isStable: true }];
+        let activeBlock = { x: 0, y: canvas.height - 120 - BLOCK_HEIGHT, w: 100, dx: 5 };
 
         function startGame() {
             inMenu = false;
             document.getElementById("startScreen").style.display = "none";
         }
 
-        function openBadges() { document.getElementById("badgeScreen").style.display = "flex"; }
-        function closeBadges() { document.getElementById("badgeScreen").style.display = "none"; }
+        function handleBuild() {
+            if (inMenu || isGameOver) return;
+            score++;
+            document.getElementById("score").innerText = "SCORE: " + score;
+
+            // physics validation: check alignment with previous block
+            let lastBlock = blocks[blocks.length - 1];
+            let overlap = Math.min(activeBlock.x + activeBlock.w, lastBlock.x + lastBlock.w) - Math.max(activeBlock.x, lastBlock.x);
+            let stableThreshold = activeBlock.w * 0.3; // need 30% overlap to be stable
+
+            if (overlap < stableThreshold) {
+                isGameOver = true;
+                showGameOver();
+                return;
+            }
+
+            // ADD BLOCK TO STACK (NOW USE IMAGE)
+            blocks.push({
+                x: activeBlock.x,
+                y: activeBlock.y,
+                w: activeBlock.w,
+                angle: 0, // start aligned
+                angVel: 0,
+                isStable: true
+            });
+
+            // MOVE ACTIVE BLOCK UP (PHYSICS + HEIGHT)
+            activeBlock.y -= BLOCK_HEIGHT;
+            
+            // ADJUST CAMERA: Scroll up slightly when a block is added
+            if (blocks.length > 5) {
+                cameraY += BLOCK_HEIGHT * 0.7; // scroll camera up
+            }
+        }
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // apply camera translation (scroll vertical)
+            ctx.translate(0, cameraY);
+
+            // Draw stacked blocks with texture
             for (let i = 0; i < blocks.length; i++) {
-                if (floorImg.complete) ctx.drawImage(floorImg, blocks[i].x, blocks[i].y, blocks[i].w, blockHeight);
-                else { ctx.fillStyle = "#888"; ctx.fillRect(blocks[i].x, blocks[i].y, blocks[i].w, blockHeight); }
+                let b = blocks[i];
+                if (flatImg.complete) {
+                    ctx.drawImage(flatImg, b.x, b.y, b.w, BLOCK_HEIGHT);
+                } else {
+                    ctx.fillStyle = i % 2 === 0 ? "#3498db" : "#e67e22";
+                    ctx.fillRect(b.x, b.y, b.w, BLOCK_HEIGHT);
+                }
             }
+
             if (!isGameOver && !inMenu) {
+                // MOVE ACTIVE BLOCK (SIDE TO SIDE)
                 activeBlock.x += activeBlock.dx;
                 if (activeBlock.x + activeBlock.w > canvas.width || activeBlock.x < 0) activeBlock.dx *= -1;
-                if (floorImg.complete) ctx.drawImage(floorImg, activeBlock.x, activeBlock.y, activeBlock.w, blockHeight);
-                else { ctx.fillStyle = "#fff"; ctx.fillRect(activeBlock.x, activeBlock.y, activeBlock.w, blockHeight); }
+                
+                // Draw moving block (with texture)
+                if (flatImg.complete) {
+                    ctx.drawImage(flatImg, activeBlock.x, activeBlock.y, activeBlock.w, BLOCK_HEIGHT);
+                } else {
+                    ctx.fillStyle = "#fff";
+                    ctx.fillRect(activeBlock.x, activeBlock.y, activeBlock.w, BLOCK_HEIGHT);
+                }
             }
+            
+            // restore camera translation
+            ctx.translate(0, -cameraY);
         }
-
-        window.addEventListener('mousedown', () => {
-            if (inMenu || isGameOver) return;
-            blocks.push({x: activeBlock.x, y: activeBlock.y, w: activeBlock.w});
-            activeBlock.y -= blockHeight;
-            score++;
-            document.getElementById("scoreDisplay").innerText = "Score: " + score;
-        });
 
         function gameLoop() {
-            draw();
+            if (!inMenu) draw();
             requestAnimationFrame(gameLoop);
         }
+        
+        function showGameOver() {
+            document.getElementById("startScreen").innerHTML = `
+                <div id="score">FINAL SCORE: ${score}</div>
+                <h1 style="color: #e74c3c;">BUILDING FELL!</h1>
+                <button id="buildButton" onclick="location.reload()" style="margin-top: 20px;">RETRY</button>
+            `;
+            document.getElementById("startScreen").style.display = "flex";
+        }
+
         gameLoop();
     </script>
 </body>
