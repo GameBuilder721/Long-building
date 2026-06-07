@@ -1,126 +1,734 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Tower Rush PRO | Enterprise Architecture</title>
-    <style>
-        body { margin: 0; background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
-        #canvas-wrapper { position: relative; width: 450px; height: 800px; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
-        canvas { display: block; width: 100%; height: 100%; cursor: pointer; }
-        #overlay { position: absolute; top: 0; width: 100%; height: 100%; pointer-events: none; }
-        .ui-score { margin-top: 60px; text-align: center; color: #fff; font-size: 5rem; font-weight: 900; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .ui-footer { position: absolute; bottom: 0; width: 100%; height: 140px; background: #222; display: flex; justify-content: center; align-items: center; pointer-events: auto; }
-        #btn-build { width: 92%; height: 85px; background: #FFD700; border: 6px solid #FFF; border-radius: 12px; color: #7B3F00; font-size: 36px; font-weight: 900; box-shadow: 0 10px #B8860B; cursor: pointer; transition: 0.1s; }
-        #btn-build:active { transform: translateY(6px); box-shadow: 0 4px #B8860B; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Long Building</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+overflow:hidden;
+background:#79d7ff;
+}
+
+#menu{
+position:absolute;
+width:100%;
+height:100%;
+background:linear-gradient(#6ed4ff,#dff9ff);
+z-index:10;
+}
+
+#title{
+position:absolute;
+top:80px;
+width:100%;
+text-align:center;
+font-size:45px;
+font-weight:bold;
+color:white;
+text-shadow:4px 4px black;
+}
+
+#play{
+position:absolute;
+bottom:90px;
+left:50%;
+transform:translateX(-50%);
+width:180px;
+height:60px;
+font-size:28px;
+background:#ffb300;
+border:none;
+border-radius:30px;
+}
+
+#home{
+position:absolute;
+bottom:0;
+left:0;
+width:50%;
+height:60px;
+font-size:25px;
+}
+
+#badge{
+position:absolute;
+bottom:0;
+right:0;
+width:50%;
+height:60px;
+font-size:25px;
+}
+
+#badgePage{
+display:none;
+position:absolute;
+width:100%;
+height:100%;
+background:#222;
+z-index:20;
+color:white;
+}
+
+.badgeCircle{
+width:120px;
+height:120px;
+border-radius:50%;
+background:black;
+border:5px solid gold;
+margin:40px auto;
+text-align:center;
+line-height:120px;
+font-size:20px;
+}
+
+#back{
+position:absolute;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+width:160px;
+height:50px;
+}
+
+#game{
+display:none;
+position:absolute;
+width:100%;
+height:100%;
+overflow:hidden;
+background:linear-gradient(#79d7ff,#dffcff);
+}
+
+#world{
+position:absolute;
+bottom:0;
+width:100%;
+height:12000px;
+}
+
+.cloud{
+position:absolute;
+width:120px;
+height:50px;
+background:white;
+border-radius:50px;
+opacity:.7;
+}
+
+.house{
+position:absolute;
+bottom:0;
+background:#034d75;
+}
+
+.floor{
+
+position:absolute;
+
+width:180px;
+
+height:60px;
+
+background:#01496a;
+
+border-top:8px solid #36b0d8;
+
+border-bottom:8px solid #003149;
+
+}
+
+.window{
+
+position:absolute;
+
+width:32px;
+
+height:40px;
+
+background:#ffe96e;
+
+border:3px solid #999;
+
+}
+
+#build{
+
+position:absolute;
+
+bottom:10px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+width:180px;
+
+height:60px;
+
+font-size:28px;
+
+background:#f5b400;
+
+border:none;
+
+z-index:5;
+
+}
+
+#score{
+
+position:absolute;
+
+top:10px;
+
+left:10px;
+
+font-size:30px;
+
+font-weight:bold;
+
+}
+
     </style>
-</head>
+    </head>
+
 <body>
 
-<div id="canvas-wrapper">
-    <canvas id="gameCanvas"></canvas>
-    <div id="overlay"><div class="ui-score" id="scoreDisplay">0</div></div>
-    <div class="ui-footer"><button id="btn-build">BUILD</button></div>
+<div id="menu">
+
+<div id="title">
+LONG BUILDING
+</div>
+
+<button id="play">
+PLAY
+</button>
+
+<button id="home">
+HOME
+</button>
+
+<button id="badge">
+BADGES
+</button>
+
+</div>
+
+<div id="badgePage">
+
+<h1 style="text-align:center;margin-top:30px;">
+BADGES
+</h1>
+
+<div class="badgeCircle">
+SECRET
+</div>
+
+<center>50 Floors</center>
+
+<div class="badgeCircle">
+MASTER
+</div>
+
+<center>100 Floors</center>
+
+<div class="badgeCircle">
+GRAND
+</div>
+
+<center>1000 Floors</center>
+
+<button id="back">
+BACK
+</button>
+
+</div>
+
+<div id="game">
+
+<div id="score">
+0
+</div>
+
+<div id="world">
+
+<div class="cloud"
+style="
+left:20px;
+top:150px;
+">
+</div>
+
+<div class="cloud"
+style="
+right:30px;
+top:300px;
+">
+</div>
+
+<div class="house"
+style="
+left:0;
+width:70px;
+height:150px;
+">
+</div>
+
+<div class="house"
+style="
+left:90px;
+width:90px;
+height:200px;
+">
+</div>
+
+<div class="house"
+style="
+right:0;
+width:100px;
+height:180px;
+">
+</div>
+
+</div>
+
+<button id="build">
+BUILD
+</button>
+
 </div>
 
 <script>
-/**
- * TOWER RUSH ENGINE V7 - PROFESSIONAL ARCHITECTURE
- * 
- * MODULE LIST:
- * 1. AssetManager: Handles high-res sprite loading.
- * 2. PhysicsEngine: Manages precise collision, momentum, and tolerance.
- * 3. RenderEngine: Decoupled GPU-accelerated drawing layers.
- * 4. GameController: Orchestrates game loops, states, and event buses.
- */
 
-// --- 1. ASSET MANAGER ---
-const AssetManager = {
-    sprites: {},
-    async init() {
-        const paths = {
-            building: 'https://i.imgur.com/YOUR_PRO_BUILDING_SPRITE.png',
-            bg: 'https://i.imgur.com/YOUR_PRO_SKY_GRADIENT.png'
-        };
-        for(let key in paths) {
-            const img = new Image();
-            img.src = paths[key];
-            this.sprites[key] = img;
-        }
-    }
+let menu=
+document.getElementById("menu");
+
+let badgePage=
+document.getElementById("badgePage");
+
+let game=
+document.getElementById("game");
+
+let world=
+document.getElementById("world");
+
+let play=
+document.getElementById("play");
+
+let badge=
+document.getElementById("badge");
+
+let back=
+document.getElementById("back");
+
+let build=
+document.getElementById("build");
+
+let scoreBox=
+document.getElementById("score");
+
+badge.onclick=function(){
+
+badgePage.style.display="block";
+
+}
+
+back.onclick=function(){
+
+badgePage.style.display="none";
+
+}
+
+play.onclick=function(){
+
+menu.style.display="none";
+
+badgePage.style.display="none";
+
+game.style.display="block";
+
+startGame();
+
+}
+
+let floors=[];
+
+let movingFloor;
+
+let score=0;
+
+let moveX=70;
+
+let moveDir=1;
+
+let floorY=0;
+
+let floorWidth=180;
+
+let camera=0;
+
+function makeFloor(x,y){
+
+let f=
+document.createElement("div");
+
+f.className="floor";
+
+f.style.left=
+x+"px";
+
+f.style.bottom=
+y+"px";
+
+for(
+let r=0;
+r<2;
+r++
+){
+
+for(
+let c=0;
+c<3;
+c++
+){
+
+let w=
+document.createElement("div");
+
+w.className="window";
+
+w.style.left=
+15+
+c*50+
+"px";
+
+w.style.top=
+8+
+r*22+
+"px";
+
+f.appendChild(w);
+
+}
+
+}
+
+world.appendChild(f);
+
+return f;
+
+}
+
+function startGame(){
+
+let base=
+makeFloor(
+90,
+0
+);
+
+floors.push({
+
+x:90,
+
+y:0,
+
+obj:base
+
+});
+
+floorY=70;
+
+spawnFloor();
+
+}
+ function spawnFloor(){
+
+movingFloor=
+makeFloor(
+moveX,
+floorY
+);
+
+}
+
+setInterval(function(){
+
+if(
+!movingFloor
+)return;
+
+moveX+=
+moveDir*3;
+
+if(
+moveX<20
+)
+moveDir=1;
+
+if(
+moveX>160
+)
+moveDir=-1;
+
+movingFloor.style.left=
+moveX+"px";
+
+},16);
+
+build.onclick=function(){
+
+if(
+!movingFloor
+)return;
+
+let last=
+floors[
+floors.length-1
+];
+
+let diff=
+Math.abs(
+moveX-last.x
+);
+
+if(
+diff>70
+){
+
+movingFloor.style.transition=
+"1s";
+
+movingFloor.style.transform=
+"rotate(35deg) translateY(500px)";
+
+setTimeout(function(){
+
+alert(
+"Game Over\nScore : "
++score
+);
+
+location.reload();
+
+},1000);
+
+return;
+
+}
+
+movingFloor.style.left=
+moveX+"px";
+
+floors.push({
+
+x:moveX,
+
+y:floorY,
+
+obj:movingFloor
+
+});
+
+score++;
+
+scoreBox.innerHTML=
+score;
+
+if(
+score==50
+){
+
+alert(
+"SECRET BADGE UNLOCKED"
+);
+
+}
+
+if(
+score==100
+){
+
+alert(
+"MASTER BADGE UNLOCKED"
+);
+
+}
+
+if(
+score==1000
+){
+
+alert(
+"GRAND MASTER BADGE UNLOCKED"
+);
+
+}
+
+floorY+=70;
+
+camera=
+floorY-400;
+
+if(
+camera<0
+)
+camera=0;
+
+world.style.transform=
+"translateY("
++camera+
+"px)";
+
+spawnFloor();
+
 };
 
-// --- 2. PHYSICS ENGINE ---
-class PhysicsEngine {
-    constructor() { this.tolerance = 75; }
-    validatePlacement(activeX, lastX) {
-        return Math.abs(activeX - lastX) < this.tolerance;
-    }
+setInterval(function(){
+
+let clouds=
+document.getElementsByClassName(
+"cloud"
+);
+
+for(
+let i=0;
+i<clouds.length;
+i++
+){
+
+let l=
+parseInt(
+clouds[i].style.left||0
+);
+
+l+=1;
+
+if(
+l>400
+)
+l=-150;
+
+clouds[i].style.left=
+l+"px";
+
 }
 
-// --- 3. RENDER ENGINE ---
-class RenderEngine {
-    constructor(ctx) { this.ctx = ctx; }
-    drawSky() { /* Professional gradient logic */ }
-    drawEntity(img, x, y) { this.ctx.drawImage(img, x, y, 200, 100); }
+},30);
+    setInterval(function(){
+
+if(score<20)return;
+
+document.body.style.backgroundPositionY=
+score+"px";
+
+},100);
+
+window.addEventListener(
+
+"resize",
+
+function(){
+
+world.style.width=
+window.innerWidth+
+"px";
+
 }
 
-// --- 4. GAME CONTROLLER (CORE ENGINE) ---
-class TowerRushEngine {
-    constructor() {
-        this.canvas = document.getElementById('gameCanvas');
-        this.ctx = this.canvas.getContext('2d');
-        this.physics = new PhysicsEngine();
-        this.renderer = new RenderEngine(this.ctx);
-        
-        this.state = { score: 0, running: true, speed: 6, cameraY: 0 };
-        this.entities = { stack: [{x: 125, y: 600}], active: {x: 0, y: 500, dir: 1} };
-        
-        document.getElementById('btn-build').onclick = () => this.onBuild();
-        this.loop();
-    }
+);
 
-    loop() {
-        if(!this.state.running) return;
-        this.update();
-        this.draw();
-        requestAnimationFrame(() => this.loop());
-    }
+document.addEventListener(
 
-    update() {
-        this.entities.active.x += this.state.speed * this.entities.active.dir;
-        if(this.entities.active.x > 250 || this.entities.active.x < 0) this.entities.active.dir *= -1;
-    }
+"touchstart",
 
-    draw() {
-        this.ctx.clearRect(0, 0, 450, 800);
-        this.ctx.save();
-        this.ctx.translate(0, this.state.cameraY);
-        
-        // Render implementation...
-        this.entities.stack.forEach(s => this.renderer.drawEntity(AssetManager.sprites.building, s.x, s.y));
-        this.renderer.drawEntity(AssetManager.sprites.building, this.entities.active.x, this.entities.active.y);
-        
-        this.ctx.restore();
-    }
+function(e){
 
-    onBuild() {
-        const last = this.entities.stack[this.entities.stack.length - 1];
-        if(this.physics.validatePlacement(this.entities.active.x, last.x)) {
-            this.state.score++;
-            document.getElementById('scoreDisplay').innerText = this.state.score;
-            this.entities.stack.push({x: this.entities.active.x, y: this.entities.active.y});
-            this.entities.active.y -= 100;
-            this.state.cameraY += 100;
-        } else {
-            this.state.running = false;
-            alert("COLLAPSE!");
-            location.reload();
-        }
-    }
+if(
+e.target.id=="build"
+){
+
+build.click();
+
 }
 
-// Initialize System
-AssetManager.init().then(() => new TowerRushEngine());
+}
+
+);
+
+function resetGame(){
+
+score=0;
+
+floorY=0;
+
+camera=0;
+
+moveX=70;
+
+moveDir=1;
+
+floors=[];
+
+world.innerHTML="";
+
+scoreBox.innerHTML="0";
+
+let h1=
+document.createElement("div");
+
+h1.className="house";
+
+h1.style.left="0px";
+h1.style.width="70px";
+h1.style.height="150px";
+
+world.appendChild(h1);
+
+let h2=
+document.createElement("div");
+
+h2.className="house";
+
+h2.style.left="90px";
+h2.style.width="90px";
+h2.style.height="200px";
+
+world.appendChild(h2);
+
+let h3=
+document.createElement("div");
+
+h3.className="house";
+
+h3.style.right="0px";
+h3.style.width="100px";
+h3.style.height="180px";
+
+world.appendChild(h3);
+
+startGame();
+
+}
+
+console.log(
+
+"LONG BUILDING LOADED"
+
+);
+
 </script>
+
 </body>
+
 </html>
