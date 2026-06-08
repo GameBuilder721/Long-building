@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Long Building</title>
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1,
+maximum-scale=1,
+user-scalable=no">
+
+<title>LONG BUILDING</title>
 
 <style>
 
@@ -11,124 +18,181 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial;
+-webkit-tap-highlight-color:transparent;
 }
 
 body{
+
 overflow:hidden;
-background:#79d7ff;
-}
 
-#menu{
-position:absolute;
-width:100%;
-height:100%;
-background:linear-gradient(#6ed4ff,#dff9ff);
-z-index:10;
-}
+background:#6fcfff;
 
-#title{
-position:absolute;
-top:80px;
-width:100%;
-text-align:center;
-font-size:45px;
-font-weight:bold;
-color:white;
-text-shadow:4px 4px black;
-}
+font-family:Arial;
 
-#play{
-position:absolute;
-bottom:90px;
-left:50%;
-transform:translateX(-50%);
-width:180px;
-height:60px;
-font-size:28px;
-background:#ffb300;
-border:none;
-border-radius:30px;
-}
-
-#home{
-position:absolute;
-bottom:0;
-left:0;
-width:50%;
-height:60px;
-font-size:25px;
-}
-
-#badge{
-position:absolute;
-bottom:0;
-right:0;
-width:50%;
-height:60px;
-font-size:25px;
-}
-
-#badgePage{
-display:none;
-position:absolute;
-width:100%;
-height:100%;
-background:#222;
-z-index:20;
-color:white;
-}
-
-.badgeCircle{
-width:120px;
-height:120px;
-border-radius:50%;
-background:black;
-border:5px solid gold;
-margin:40px auto;
-text-align:center;
-line-height:120px;
-font-size:20px;
-}
-
-#back{
-position:absolute;
-bottom:20px;
-left:50%;
-transform:translateX(-50%);
-width:160px;
-height:50px;
 }
 
 #game{
-display:none;
-position:absolute;
-width:100%;
-height:100%;
+
+position:fixed;
+
+left:0;
+
+top:0;
+
+width:100vw;
+
+height:100vh;
+
 overflow:hidden;
-background:linear-gradient(#79d7ff,#dffcff);
+
+background:linear-gradient(
+
+#63cfff,
+
+#8de0ff,
+
+#c8f6ff,
+
+#fff4d8
+
+);
+
 }
 
 #world{
+
 position:absolute;
+
+left:0;
+
 bottom:0;
+
 width:100%;
-height:12000px;
+
+height:90000px;
+
+transform:translateY(0);
+
+will-change:transform;
+
+}
+
+#grass{
+
+position:absolute;
+
+left:0;
+
+bottom:0;
+
+width:100%;
+
+height:120px;
+
+background:
+
+linear-gradient(
+
+#47d74f,
+
+#2bbd2b
+
+);
+
+}
+
+.grassBlade{
+
+position:absolute;
+
+bottom:100px;
+
+width:5px;
+
+height:25px;
+
+background:#2ca52c;
+
+border-radius:5px;
+
 }
 
 .cloud{
+
 position:absolute;
-width:120px;
-height:50px;
+
 background:white;
-border-radius:50px;
-opacity:.7;
+
+border-radius:100px;
+
+opacity:.85;
+
 }
 
-.house{
+.cloud:before{
+
+content:"";
+
 position:absolute;
-bottom:0;
-background:#034d75;
+
+width:60px;
+
+height:60px;
+
+background:white;
+
+border-radius:50%;
+
+left:20px;
+
+top:-20px;
+
+}
+
+.cloud:after{
+
+content:"";
+
+position:absolute;
+
+width:70px;
+
+height:70px;
+
+background:white;
+
+border-radius:50%;
+
+left:70px;
+
+top:-30px;
+
+}
+
+.skyBuilding{
+
+position:absolute;
+
+bottom:120px;
+
+background:#396f96;
+
+border-top:8px solid #29597a;
+
+}
+
+.skyWindow{
+
+position:absolute;
+
+width:18px;
+
+height:22px;
+
+background:#ffe87a;
+
+border:2px solid #dcb84d;
+
 }
 
 .floor{
@@ -137,13 +201,25 @@ position:absolute;
 
 width:180px;
 
-height:60px;
+height:70px;
 
-background:#01496a;
+background:
 
-border-top:8px solid #36b0d8;
+linear-gradient(
 
-border-bottom:8px solid #003149;
+#0b5376,
+
+#0f6e92
+
+);
+
+border-top:8px solid #154d65;
+
+border-bottom:8px solid #154d65;
+
+box-shadow:
+
+0 5px 15px rgba(0,0,0,.35);
 
 }
 
@@ -151,238 +227,489 @@ border-bottom:8px solid #003149;
 
 position:absolute;
 
-width:32px;
+width:26px;
 
-height:40px;
+height:34px;
 
-background:#ffe96e;
+background:#ffe470;
 
-border:3px solid #999;
+border:4px solid #d7d7d7;
+
+box-shadow:
+
+inset 0 0 5px #fff;
 
 }
 
-#build{
+.window:before{
+
+content:"";
 
 position:absolute;
 
-bottom:10px;
+left:9px;
 
-left:50%;
+top:0;
 
-transform:translateX(-50%);
+width:3px;
 
-width:180px;
+height:100%;
 
-height:60px;
+background:#b0b0b0;
 
-font-size:28px;
+}
 
-background:#f5b400;
+.window:after{
 
-border:none;
+content:"";
 
-z-index:5;
+position:absolute;
+
+left:0;
+
+top:14px;
+
+width:100%;
+
+height:3px;
+
+background:#b0b0b0;
 
 }
 
 #score{
 
+position:fixed;
+
+top:15px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+font-size:34px;
+
+font-weight:bold;
+
+color:white;
+
+text-shadow:2px 2px 5px black;
+
+z-index:100;
+
+}
+
+#menu{
+
+position:fixed;
+
+left:0;
+
+top:0;
+
+width:100%;
+
+height:100%;
+
+background:
+
+linear-gradient(
+
+#69d1ff,
+
+#dff8ff
+
+);
+
+z-index:500;
+
+}
+
+#title{
+
+margin-top:90px;
+
+text-align:center;
+
+font-size:50px;
+
+font-weight:bold;
+
+color:white;
+
+text-shadow:3px 3px 6px black;
+
+}
+
+#play{
+
 position:absolute;
 
-top:10px;
+bottom:110px;
 
-left:10px;
+left:50%;
 
-font-size:30px;
+transform:translateX(-50%);
+
+width:220px;
+
+height:70px;
+
+border:none;
+
+border-radius:50px;
+
+background:#ffc400;
+
+font-size:32px;
 
 font-weight:bold;
 
 }
 
-    </style>
-    </head>
+#home{
+
+position:absolute;
+
+bottom:20px;
+
+left:30px;
+
+font-size:26px;
+
+font-weight:bold;
+
+}
+
+#badges{
+
+position:absolute;
+
+bottom:20px;
+
+right:30px;
+
+font-size:26px;
+
+font-weight:bold;
+
+}
+
+#build{
+
+position:fixed;
+
+bottom:20px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+width:210px;
+
+height:70px;
+
+background:
+
+repeating-linear-gradient(
+
+45deg,
+
+#f8d500,
+
+#f8d500 15px,
+
+#222 15px,
+
+#222 30px
+
+);
+
+border:none;
+
+border-radius:15px;
+
+font-size:30px;
+
+font-weight:bold;
+
+display:none;
+
+z-index:1000;
+
+}
+
+.badgeCircle{
+
+width:90px;
+
+height:90px;
+
+border-radius:50%;
+
+background:black;
+
+margin:25px auto;
+
+}
+
+</style>
+
+</head>
 
 <body>
-
-<div id="menu">
-
-<div id="title">
-LONG BUILDING
-</div>
-
-<button id="play">
-PLAY
-</button>
-
-<button id="home">
-HOME
-</button>
-
-<button id="badge">
-BADGES
-</button>
-
-</div>
-
-<div id="badgePage">
-
-<h1 style="text-align:center;margin-top:30px;">
-BADGES
-</h1>
-
-<div class="badgeCircle">
-SECRET
-</div>
-
-<center>50 Floors</center>
-
-<div class="badgeCircle">
-MASTER
-</div>
-
-<center>100 Floors</center>
-
-<div class="badgeCircle">
-GRAND
-</div>
-
-<center>1000 Floors</center>
-
-<button id="back">
-BACK
-</button>
-
-</div>
 
 <div id="game">
 
 <div id="score">
+
 0
+
 </div>
 
 <div id="world">
 
-<div class="cloud"
-style="
-left:20px;
-top:150px;
-">
+<div id="grass"></div>
+
 </div>
 
-<div class="cloud"
-style="
-right:30px;
-top:300px;
-">
+<div id="menu">
+
+<div id="title">
+
+LONG BUILDING
+
 </div>
 
-<div class="house"
-style="
-left:0;
-width:70px;
-height:150px;
-">
+<button id="play">
+
+PLAY
+
+</button>
+
+<div id="home">
+
+HOME
+
 </div>
 
-<div class="house"
-style="
-left:90px;
-width:90px;
-height:200px;
-">
-</div>
+<div id="badges">
 
-<div class="house"
-style="
-right:0;
-width:100px;
-height:180px;
-">
+BADGES
+
 </div>
 
 </div>
 
 <button id="build">
+
 BUILD
+
 </button>
 
-</div>
-
 <script>
+    const world=
+document.getElementById(
+"world"
+);
 
-let menu=
-document.getElementById("menu");
+const play=
+document.getElementById(
+"play"
+);
 
-let badgePage=
-document.getElementById("badgePage");
+const build=
+document.getElementById(
+"build"
+);
 
-let game=
-document.getElementById("game");
+const menu=
+document.getElementById(
+"menu"
+);
 
-let world=
-document.getElementById("world");
+const scoreText=
+document.getElementById(
+"score"
+);
 
-let play=
-document.getElementById("play");
+let tower=[];
 
-let badge=
-document.getElementById("badge");
+let movingFloor=null;
 
-let back=
-document.getElementById("back");
-
-let build=
-document.getElementById("build");
-
-let scoreBox=
-document.getElementById("score");
-
-badge.onclick=function(){
-
-badgePage.style.display="block";
-
-}
-
-back.onclick=function(){
-
-badgePage.style.display="none";
-
-}
-
-play.onclick=function(){
-
-menu.style.display="none";
-
-badgePage.style.display="none";
-
-game.style.display="block";
-
-startGame();
-
-}
-
-let floors=[];
-
-let movingFloor;
-
-let score=0;
-
-let moveX=70;
+let moveX=90;
 
 let moveDir=1;
 
-let floorY=0;
+let towerHeight=120;
 
-let floorWidth=180;
+let cameraY=0;
 
-let camera=0;
+let score=0;
 
-function makeFloor(x,y){
+let playing=false;
+
+for(
+let i=0;
+i<60;
+i++
+){
+
+let g=
+document.createElement(
+"div"
+);
+
+g.className=
+"grassBlade";
+
+g.style.left=
+Math.random()*400+
+"px";
+
+g.style.height=
+20+
+Math.random()*25+
+"px";
+
+world.appendChild(g);
+
+}
+
+for(
+let i=0;
+i<10;
+i++
+){
+
+let c=
+document.createElement(
+"div"
+);
+
+c.className=
+"cloud";
+
+c.style.width=
+120+
+Math.random()*80+
+"px";
+
+c.style.height=
+50+
+Math.random()*20+
+"px";
+
+c.style.left=
+Math.random()*400+
+"px";
+
+c.style.bottom=
+500+
+Math.random()*800+
+"px";
+
+world.appendChild(c);
+
+}
+
+function sideBuilding(
+x,
+w,
+h
+){
+
+let b=
+document.createElement(
+"div"
+);
+
+b.className=
+"skyBuilding";
+
+b.style.left=
+x+"px";
+
+b.style.width=
+w+"px";
+
+b.style.height=
+h+"px";
+
+for(
+let y=0;
+y<8;
+y++
+){
+
+for(
+let x1=0;
+x1<3;
+x1++
+){
+
+let win=
+document.createElement(
+"div"
+);
+
+win.className=
+"skyWindow";
+
+win.style.left=
+10+
+x1*25+
+"px";
+
+win.style.top=
+10+
+y*30+
+"px";
+
+b.appendChild(
+win
+);
+
+}
+
+}
+
+world.appendChild(
+b
+);
+
+}
+
+sideBuilding(
+10,
+80,
+220
+);
+
+sideBuilding(
+110,
+90,
+300
+);
+
+sideBuilding(
+250,
+80,
+260
+);
+
+function makeFloor(
+x,
+y
+){
 
 let f=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
-f.className="floor";
+f.className=
+"floor";
 
 f.style.left=
 x+"px";
@@ -398,78 +725,107 @@ r++
 
 for(
 let c=0;
-c<3;
+c<4;
 c++
 ){
 
 let w=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
-w.className="window";
+w.className=
+"window";
 
 w.style.left=
-15+
-c*50+
+10+
+c*40+
 "px";
 
 w.style.top=
 8+
-r*22+
+r*28+
 "px";
 
-f.appendChild(w);
+f.appendChild(
+w
+);
 
 }
 
 }
 
-world.appendChild(f);
+world.appendChild(
+f
+);
 
 return f;
 
 }
 
-function startGame(){
+function createBase(){
 
-let base=
+let f=
 makeFloor(
 90,
-0
+90
 );
 
-floors.push({
+tower.push({
 
 x:90,
 
-y:0,
+y:90,
 
-obj:base
+obj:f
 
 });
-
-floorY=70;
 
 spawnFloor();
 
 }
- function spawnFloor(){
+
+function spawnFloor(){
 
 movingFloor=
 makeFloor(
+
 moveX,
-floorY
+
+towerHeight
+
 );
 
 }
 
-setInterval(function(){
+play.onclick=
+function(){
+
+menu.style.display=
+"none";
+
+build.style.display=
+"block";
+
+playing=true;
+
+createBase();
+
+};
+
+setInterval(
+function(){
+
+if(
+!playing
+)return;
 
 if(
 !movingFloor
 )return;
 
 moveX+=
-moveDir*3;
+moveDir*2;
 
 if(
 moveX<20
@@ -482,19 +838,137 @@ moveX>160
 moveDir=-1;
 
 movingFloor.style.left=
-moveX+"px";
+moveX+
+"px";
 
-},16);
+},
+16
+);
+    function updateScore(){
 
-build.onclick=function(){
+scoreText.innerHTML=score;
+
+if(score==50){
+unlockBadge(
+"Blue Key",
+"bluekey.png"
+);
+}
+
+if(score==100){
+unlockBadge(
+"Master",
+"master.png"
+);
+}
+
+if(score==1000){
+unlockBadge(
+"Grand Master",
+"grandmaster.png"
+);
+}
+
+}
+
+function unlockBadge(
+name,
+img
+){
+
+let pop=
+document.createElement(
+"div"
+);
+
+pop.style.position=
+"fixed";
+
+pop.style.left="50%";
+pop.style.top="50%";
+
+pop.style.transform=
+"translate(-50%,-50%)";
+
+pop.style.background=
+"rgba(0,0,0,.85)";
+
+pop.style.padding=
+"20px";
+
+pop.style.borderRadius=
+"20px";
+
+pop.style.zIndex=
+99999;
+
+let image=
+document.createElement(
+"img"
+);
+
+image.src=img;
+
+image.style.width=
+"140px";
+
+image.style.height=
+"140px";
+
+image.style.borderRadius=
+"50%";
+
+let text=
+document.createElement(
+"div"
+);
+
+text.innerHTML=
+"<br><b>"+name+
+"<br>UNLOCKED!</b>";
+
+text.style.color=
+"gold";
+
+text.style.fontSize=
+"24px";
+
+text.style.textAlign=
+"center";
+
+pop.appendChild(
+image
+);
+
+pop.appendChild(
+text
+);
+
+document.body.appendChild(
+pop
+);
+
+setTimeout(
+function(){
+
+pop.remove();
+
+},
+3000
+);
+
+}
+
+build.onclick=
+function(){
 
 if(
 !movingFloor
 )return;
 
 let last=
-floors[
-floors.length-1
+tower[
+tower.length-1
 ];
 
 let diff=
@@ -503,25 +977,28 @@ moveX-last.x
 );
 
 if(
-diff>70
+diff>60
 ){
 
 movingFloor.style.transition=
 "1s";
 
 movingFloor.style.transform=
-"rotate(35deg) translateY(500px)";
+"rotate(25deg) translateY(500px)";
 
-setTimeout(function(){
+setTimeout(
+function(){
 
 alert(
-"Game Over\nScore : "
-+score
+"GAME OVER\n\nFLOORS : "+
+score
 );
 
 location.reload();
 
-},1000);
+},
+1000
+);
 
 return;
 
@@ -530,11 +1007,11 @@ return;
 movingFloor.style.left=
 moveX+"px";
 
-floors.push({
+tower.push({
 
 x:moveX,
 
-y:floorY,
+y:towerHeight,
 
 obj:movingFloor
 
@@ -542,59 +1019,49 @@ obj:movingFloor
 
 score++;
 
-scoreBox.innerHTML=
-score;
+updateScore();
 
-if(
-score==50
-){
+movingFloor=null;
 
-alert(
-"SECRET BADGE UNLOCKED"
-);
+towerHeight+=70;
 
-}
-
-if(
-score==100
-){
-
-alert(
-"MASTER BADGE UNLOCKED"
-);
-
-}
-
-if(
-score==1000
-){
-
-alert(
-"GRAND MASTER BADGE UNLOCKED"
-);
-
-}
-
-floorY+=70;
-
-camera=
-floorY-400;
-
-if(
-camera<0
-)
-camera=0;
-
-world.style.transform=
-"translateY("
-+camera+
-"px)";
+moveX=
+tower[
+tower.length-1
+].x;
 
 spawnFloor();
 
 };
 
-setInterval(function(){
+function cameraLoop(){
+
+let target=
+towerHeight-350;
+
+if(
+target<0
+)
+target=0;
+
+cameraY+=
+(target-cameraY)*0.08;
+
+world.style.transform=
+"translateY("+
+cameraY+
+"px)";
+
+requestAnimationFrame(
+cameraLoop
+);
+
+}
+
+cameraLoop();
+
+setInterval(
+function(){
 
 let clouds=
 document.getElementsByClassName(
@@ -607,32 +1074,48 @@ i<clouds.length;
 i++
 ){
 
-let l=
-parseInt(
-clouds[i].style.left||0
+let p=
+parseFloat(
+clouds[i].style.left
 );
 
-l+=1;
+p+=0.4;
 
 if(
-l>400
+p>420
 )
-l=-150;
+p=-150;
 
 clouds[i].style.left=
-l+"px";
+p+"px";
 
 }
 
-},30);
-    setInterval(function(){
+},
+30
+);
+    document.getElementById(
+"badges"
+).onclick=function(){
 
-if(score<20)return;
+alert(
 
-document.body.style.backgroundPositionY=
-score+"px";
+"BADGES\n\n"+
+"50 Floors = Blue Key\n\n"+
+"100 Floors = Master\n\n"+
+"1000 Floors = Grand Master"
 
-},100);
+);
+
+};
+
+document.getElementById(
+"home"
+).onclick=function(){
+
+location.reload();
+
+};
 
 window.addEventListener(
 
@@ -666,60 +1149,109 @@ build.click();
 
 );
 
-function resetGame(){
+function animateBuildings(){
 
-score=0;
+let b=
 
-floorY=0;
+document.getElementsByClassName(
 
-camera=0;
+"skyBuilding"
 
-moveX=70;
+);
 
-moveDir=1;
+for(
 
-floors=[];
+let i=0;
 
-world.innerHTML="";
+i<b.length;
 
-scoreBox.innerHTML="0";
+i++
 
-let h1=
-document.createElement("div");
+){
 
-h1.className="house";
+let y=
 
-h1.style.left="0px";
-h1.style.width="70px";
-h1.style.height="150px";
+Math.sin(
 
-world.appendChild(h1);
+Date.now()/1000+i
 
-let h2=
-document.createElement("div");
+)*0.5;
 
-h2.className="house";
+b[i].style.transform=
 
-h2.style.left="90px";
-h2.style.width="90px";
-h2.style.height="200px";
+"translateY("+
 
-world.appendChild(h2);
+y+
 
-let h3=
-document.createElement("div");
-
-h3.className="house";
-
-h3.style.right="0px";
-h3.style.width="100px";
-h3.style.height="180px";
-
-world.appendChild(h3);
-
-startGame();
+"px)";
 
 }
+
+requestAnimationFrame(
+
+animateBuildings
+
+);
+
+}
+
+animateBuildings();
+
+function skyLoop(){
+
+let c=
+
+document.getElementsByClassName(
+
+"cloud"
+
+);
+
+for(
+
+let i=0;
+
+i<c.length;
+
+i++
+
+){
+
+let l=
+
+parseFloat(
+
+c[i].style.left
+
+);
+
+l+=0.2;
+
+if(
+
+l>500
+
+){
+
+l=-200;
+
+}
+
+c[i].style.left=
+
+l+"px";
+
+}
+
+requestAnimationFrame(
+
+skyLoop
+
+);
+
+}
+
+skyLoop();
 
 console.log(
 
