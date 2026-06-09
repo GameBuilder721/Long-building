@@ -1,89 +1,1795 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>LONG BUILDING</title>
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none; }
-        body { overflow:hidden; background:#6fcfff; font-family:Arial; }
-        #game { position:fixed; width:100vw; height:100vh; overflow:hidden; }
-        #world { position:absolute; bottom:0; width:100%; height:100%; z-index:1; }
-        
-        #menu { position:fixed; width:100%; height:100%; z-index:1000; display:flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(#69d1ff, #dff8ff); }
-        
-        button { border:4px solid #cc9900; border-radius:50px; background:#ffc400; font-weight:bold; cursor:pointer; pointer-events:auto; }
-        #play { width:260px; height:80px; font-size:40px; margin-bottom:20px; }
-        .nav-btn { font-size:24px; padding:10px 20px; }
-        .menu-nav { display:flex; gap:30px; margin-top:20px; }
-        
-        #howToPlayPage, #badgePage { position:fixed; top:15%; left:10%; width:80%; padding:30px; background:#fff4d8; border:5px solid #ffc400; border-radius:30px; display:none; z-index:3000; font-size:28px; }
-        #build { display:none; position:absolute; bottom:30px; left:50%; transform:translateX(-50%); width:180px; height:60px; font-size:24px; z-index:2000; }
-    </style>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<title>Long Building</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+-webkit-tap-highlight-color:transparent;
+}
+
+body{
+overflow:hidden;
+background:#7fdcff;
+}
+
+#game{
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+overflow:hidden;
+background:linear-gradient(
+#79d8ff,
+#c8f5ff,
+#ffffff
+);
+}
+
+#world{
+position:absolute;
+left:0;
+bottom:0;
+width:100%;
+height:60000px;
+}
+
+#grass{
+position:absolute;
+left:0;
+bottom:0;
+width:100%;
+height:100px;
+background:linear-gradient(
+#4fd34f,
+#2bb52b
+);
+}
+
+.cloud{
+position:absolute;
+width:120px;
+height:45px;
+background:white;
+border-radius:50px;
+opacity:.85;
+}
+
+.cloud:before{
+content:"";
+position:absolute;
+width:50px;
+height:50px;
+background:white;
+border-radius:50%;
+left:20px;
+top:-20px;
+}
+
+.cloud:after{
+content:"";
+position:absolute;
+width:60px;
+height:60px;
+background:white;
+border-radius:50%;
+left:60px;
+top:-25px;
+}
+
+#menu{
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+z-index:100;
+}
+
+#title{
+margin-top:70px;
+text-align:center;
+font-size:50px;
+font-weight:bold;
+color:white;
+text-shadow:3px 3px black;
+}
+
+#how{
+position:absolute;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+width:180px;
+height:50px;
+font-size:22px;
+}
+
+#play{
+position:absolute;
+left:50%;
+transform:translateX(-50%);
+bottom:130px;
+width:200px;
+height:65px;
+font-size:30px;
+}
+
+#home{
+position:absolute;
+bottom:30px;
+left:30px;
+font-size:26px;
+font-weight:bold;
+}
+
+#badges{
+position:absolute;
+bottom:30px;
+right:30px;
+font-size:26px;
+font-weight:bold;
+}
+
+#help{
+display:none;
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:85%;
+background:#ffe56b;
+padding:20px;
+border-radius:20px;
+border:4px solid black;
+z-index:500;
+}
+
+#close{
+position:absolute;
+right:10px;
+top:10px;
+font-size:30px;
+}
+
+#helpText{
+margin-top:35px;
+font-size:22px;
+line-height:40px;
+}
+
+#score{
+display:none;
+position:fixed;
+top:10px;
+left:50%;
+transform:translateX(-50%);
+font-size:34px;
+font-weight:bold;
+color:white;
+text-shadow:2px 2px black;
+}
+
+#build{
+display:none;
+position:fixed;
+bottom:5px;
+left:35%;
+transform:translateX(-50%);
+width:170px;
+height:60px;
+font-size:28px;
+z-index:100;
+}
+
+#x2{
+display:none;
+position:fixed;
+bottom:5px;
+left:75%;
+transform:translateX(-50%);
+width:70px;
+height:60px;
+font-size:24px;
+z-index:100;
+}
+
+.floor{
+position:absolute;
+width:180px;
+height:65px;
+background:#0d6f97;
+border-top:8px solid #084d69;
+border-bottom:8px solid #084d69;
+}
+
+.window{
+position:absolute;
+width:28px;
+height:20px;
+background:#ffe86d;
+border:2px solid #999;
+}
+
+</style>
+
 </head>
+
 <body>
-    <div id="game">
-        <div id="world"></div>
-        <div id="menu">
-            <h1 style="font-size:50px; color:white; margin-bottom:30px;">LONG BUILDING</h1>
-            <button id="play">PLAY</button>
-            <button id="howToPlayBtn" class="nav-btn">HOW TO PLAY</button>
-            <div class="menu-nav">
-                <button id="home" class="nav-btn">HOME</button>
-                <button id="badges" class="nav-btn">BADGES</button>
-            </div>
-        </div>
-        <div id="howToPlayPage">
-            <div id="closeHow" style="text-align:right; cursor:pointer;">❌</div>
-            <p>• Welcome to Long Building<br>• Click Play to start<br>• Click Build to stack floors</p>
-        </div>
-        <div id="badgePage">
-            <div id="closeBadge" style="text-align:right; cursor:pointer;">❌</div>
-            <div id="badgeList"></div>
-        </div>
-        <button id="build">BUILD</button>
-    </div>
-    <script>
-    const menu = document.getElementById("menu");
-    const play = document.getElementById("play");
-    const build = document.getElementById("build");
-    const world = document.getElementById("world");
-    let score = 0;
 
-    // Badges
-    document.getElementById('badges').addEventListener('click', () => {
-        const list = document.getElementById('badgeList');
-        const b = [{f:100, n:"Rookie"}, {f:500, n:"Master"}, {f:1000, n:"Grand Master"}];
-        list.innerHTML = "<h2>Achievements</h2>";
-        b.forEach(i => {
-            let status = score >= i.f ? '<span style="color:green;">✅</span>' : '';
-            list.innerHTML += `<div style="margin:10px 0;">${i.f} floors = ${i.n} ${status}</div>`;
-        });
-        document.getElementById('badgePage').style.display = 'block';
-    });
+<div id="game">
 
-    document.getElementById('howToPlayBtn').onclick = () => document.getElementById('howToPlayPage').style.display = 'block';
-    document.getElementById('closeHow').onclick = () => document.getElementById('howToPlayPage').style.display = 'none';
-    document.getElementById('closeBadge').onclick = () => document.getElementById('badgePage').style.display = 'none';
-    document.getElementById('home').onclick = () => location.reload();
-    
-    // Play button triggers game
-    play.addEventListener('click', () => {
-        menu.style.display = "none";
-        build.style.display = "block";
-        startGame(); // Calling your core game function
-    });
-        function startGame() {
-        // CALL YOUR ORIGINAL FUNCTIONS HERE:
-        // spawnFloor();
-        // gameLoop();
-        // drawGrass();
-        // drawSideBuildings();
-        console.log("Game graphics loading...");
+<div id="world">
+
+<div id="grass"></div>
+
+</div>
+
+<div id="score">
+
+0
+
+</div>
+
+<div id="menu">
+
+<div id="title">
+
+LONG BUILDING
+
+</div>
+
+<button id="how">
+
+HOW TO PLAY
+
+</button>
+
+<button id="play">
+
+PLAY
+
+</button>
+
+<div id="home">
+
+HOME
+
+</div>
+
+<div id="badges">
+
+BADGES
+
+</div>
+
+</div>
+
+<div id="help">
+
+<div id="close">
+
+❌
+
+</div>
+
+<div id="helpText">
+
+Welcome! to the Long building game
+
+<br><br>
+
+• Start the game from the play button.
+
+<br><br>
+
+• Stack the building through Build button.
+
+<br><br>
+
+• Reach at thousand floors and get a grandmaster badge.
+
+</div>
+
+</div>
+
+<button id="build">
+
+BUILD
+
+</button>
+
+<button id="x2">
+
+2X
+
+</button>
+
+<script>
+
+let how=
+document.getElementById(
+"how"
+);
+
+let help=
+document.getElementById(
+"help"
+);
+
+let close=
+document.getElementById(
+"close"
+);
+
+how.onclick=function(){
+
+help.style.display=
+"block";
+
+};
+
+close.onclick=function(){
+
+help.style.display=
+"none";
+
+};
+
+for(
+let i=0;
+i<10;
+i++
+){
+
+let c=
+document.createElement(
+"div"
+);
+
+c.className=
+"cloud";
+
+c.style.left=
+Math.random()*400+
+"px";
+
+c.style.top=
+50+
+Math.random()*500+
+"px";
+
+document.getElementById(
+"world"
+).appendChild(
+c
+);
+
+}
+    let play=
+document.getElementById(
+"play"
+);
+
+let build=
+document.getElementById(
+"build"
+);
+
+let x2=
+document.getElementById(
+"x2"
+);
+
+let menu=
+document.getElementById(
+"menu"
+);
+
+let scoreBox=
+document.getElementById(
+"score"
+);
+
+let world=
+document.getElementById(
+"world"
+);
+
+let score=0;
+
+let playing=false;
+
+let tower=[];
+
+let movingFloor=null;
+
+let moveX=90;
+
+let moveDir=1;
+
+let floorY=100;
+
+let cameraY=0;
+
+function makeFloor(
+x,
+y
+){
+
+let floor=
+document.createElement(
+"div"
+);
+
+floor.className=
+"floor";
+
+floor.style.left=
+x+"px";
+
+floor.style.bottom=
+y+"px";
+
+for(
+let r=0;
+r<2;
+r++
+){
+
+for(
+let c=0;
+c<4;
+c++
+){
+
+let w=
+document.createElement(
+"div"
+);
+
+w.className=
+"window";
+
+w.style.left=
+10+c*40+"px";
+
+w.style.top=
+10+r*25+"px";
+
+floor.appendChild(
+w
+);
+
+}
+
+}
+
+world.appendChild(
+floor
+);
+
+return floor;
+
+}
+
+function createBase(){
+
+let base=
+makeFloor(
+90,
+100
+);
+
+tower.push({
+
+x:90,
+
+y:100,
+
+obj:base
+
+});
+
+floorY=170;
+
+spawnFloor();
+
+}
+
+function spawnFloor(){
+
+movingFloor=
+makeFloor(
+
+moveX,
+
+floorY
+
+);
+
+}
+
+play.onclick=
+function(){
+
+menu.style.display=
+"none";
+
+scoreBox.style.display=
+"block";
+
+build.style.display=
+"block";
+
+x2.style.display=
+"block";
+
+playing=true;
+
+createBase();
+
+};
+
+setInterval(
+function(){
+
+if(
+!playing
+)return;
+
+if(
+!movingFloor
+)return;
+
+moveX+=
+moveDir*2;
+
+if(
+moveX<20
+)
+moveDir=1;
+
+if(
+moveX>160
+)
+moveDir=-1;
+
+movingFloor.style.left=
+moveX+"px";
+
+},
+16
+);
+
+x2.onclick=
+function(){
+
+alert(
+"2X MODE\nComing Soon"
+);
+
+};
+
+    build.onclick=function(){
+
+if(
+!movingFloor
+)return;
+
+let last=
+tower[
+tower.length-1
+];
+
+let diff=
+Math.abs(
+moveX-last.x
+);
+
+if(
+diff>60
+){
+
+movingFloor.style.transition=
+"1s";
+
+movingFloor.style.transform=
+"rotate(25deg) translateY(500px)";
+
+setTimeout(
+function(){
+
+alert(
+"GAME OVER\n\nFLOORS : "+
+score
+);
+
+location.reload();
+
+},
+1000
+);
+
+return;
+
+}
+
+movingFloor.style.left=
+moveX+"px";
+
+tower.push({
+
+x:moveX,
+
+y:floorY,
+
+obj:movingFloor
+
+});
+
+score++;
+
+scoreBox.innerHTML=
+score;
+
+movingFloor=null;
+
+floorY+=70;
+
+moveX=
+tower[
+tower.length-1
+].x;
+
+spawnFloor();
+
+};
+
+function cameraLoop(){
+
+let target=
+floorY-350;
+
+if(
+target<0
+)
+target=0;
+
+cameraY+=
+(target-cameraY)*0.08;
+
+world.style.transform=
+"translateY("+
+cameraY+
+"px)";
+
+requestAnimationFrame(
+cameraLoop
+);
+
+}
+
+cameraLoop();
+
+setInterval(
+function(){
+
+let clouds=
+document.getElementsByClassName(
+"cloud"
+);
+
+for(
+let i=0;
+i<clouds.length;
+i++
+){
+
+let p=
+parseFloat(
+clouds[i].style.left
+);
+
+p+=0.3;
+
+if(
+p>450
+)
+p=-150;
+
+clouds[i].style.left=
+p+"px";
+
+}
+
+},
+30
+);
+
+if(
+score==50
+){
+
+console.log(
+"Blue Key Badge"
+);
+
+}
+
+if(
+score==100
+){
+
+console.log(
+"Master Badge"
+);
+
+}
+
+if(
+score==1000
+){
+
+console.log(
+"Grand Master Badge"
+);
+
     }
+    let blueBadge=false;
+let masterBadge=false;
+let grandBadge=false;
 
-    // Ensure your original game-stacking logic functions 
-    // are placed here to maintain your original game design.
-    </script>
-</body>
-</html>
+function checkBadges(){
+
+if(
+score>=50 &&
+!blueBadge
+){
+
+blueBadge=true;
+
+alert(
+"🏅 Blue Key Badge Unlocked!"
+);
+
+}
+
+if(
+score>=100 &&
+!masterBadge
+){
+
+masterBadge=true;
+
+alert(
+"🏅 Master Badge Unlocked!"
+);
+
+}
+
+if(
+score>=1000 &&
+!grandBadge
+){
+
+grandBadge=true;
+
+alert(
+"🏅 Grand Master Badge Unlocked!"
+);
+
+}
+
+}
+
+let badgePage=
+document.createElement(
+"div"
+);
+
+badgePage.style.display=
+"none";
+
+badgePage.style.position=
+"fixed";
+
+badgePage.style.left="0";
+
+badgePage.style.top="0";
+
+badgePage.style.width="100%";
+
+badgePage.style.height="100%";
+
+badgePage.style.background=
+"#222";
+
+badgePage.style.color=
+"white";
+
+badgePage.style.zIndex=
+500;
+
+badgePage.style.textAlign=
+"center";
+
+badgePage.innerHTML=
+
+"<h1 style='margin-top:30px'>BADGES</h1>"+
+
+"<br><br>"+
+
+"Blue Key <span id='b1'>❌</span>"+
+
+"<br><br><br>"+
+
+"Master <span id='b2'>❌</span>"+
+
+"<br><br><br>"+
+
+"Grand Master <span id='b3'>❌</span>"+
+
+"<br><br><br>"+
+
+"<button id='backBadge' style='width:150px;height:50px'>BACK</button>";
+
+document.body.appendChild(
+badgePage
+);
+
+document.getElementById(
+"badges"
+).onclick=
+function(){
+
+badgePage.style.display=
+"block";
+
+};
+
+document.addEventListener(
+"click",
+function(e){
+
+if(
+e.target &&
+e.target.id=="backBadge"
+){
+
+badgePage.style.display=
+"none";
+
+}
+
+});
+
+setInterval(
+function(){
+
+if(
+blueBadge
+){
+
+document.getElementById(
+"b1"
+).innerHTML=
+"✅";
+
+}
+
+if(
+masterBadge
+){
+
+document.getElementById(
+"b2"
+).innerHTML=
+"✅";
+
+}
+
+if(
+grandBadge
+){
+
+document.getElementById(
+"b3"
+).innerHTML=
+"✅";
+
+}
+
+checkBadges();
+
+},
+500
+);
+
+setInterval(
+function(){
+
+let c=
+document.getElementsByClassName(
+"cloud"
+);
+
+for(
+let i=0;
+i<c.length;
+i++
+){
+
+let x=
+parseFloat(
+c[i].style.left
+);
+
+x+=0.2;
+
+if(
+x>500
+){
+
+x=-150;
+
+}
+
+c[i].style.left=
+x+"px";
+
+}
+
+},
+40
+);
+    document.getElementById(
+"home"
+).onclick=
+function(){
+
+location.reload();
+
+};
+
+x2.onclick=
+function(){
+
+if(
+!playing
+)return;
+
+if(
+!movingFloor
+)return;
+
+let last=
+tower[
+tower.length-1
+];
+
+let diff=
+Math.abs(
+moveX-last.x
+);
+
+if(
+diff>60
+){
+
+movingFloor.style.transition=
+"1s";
+
+movingFloor.style.transform=
+"rotate(25deg) translateY(500px)";
+
+setTimeout(
+function(){
+
+alert(
+"GAME OVER\n\nFLOORS : "+
+score
+);
+
+location.reload();
+
+},
+1000
+);
+
+return;
+
+}
+
+movingFloor.style.left=
+moveX+"px";
+
+tower.push({
+
+x:moveX,
+
+y:floorY,
+
+obj:movingFloor
+
+});
+
+score++;
+
+score++;
+
+scoreBox.innerHTML=
+score;
+
+movingFloor=null;
+
+floorY+=140;
+
+moveX=
+tower[
+tower.length-1
+].x;
+
+spawnFloor();
+
+};
+
+setInterval(
+function(){
+
+let sky=
+document.getElementsByClassName(
+"cloud"
+);
+
+for(
+let i=0;
+i<sky.length;
+i++
+){
+
+let y=
+parseFloat(
+sky[i].style.top
+);
+
+y+=
+Math.sin(
+Date.now()/1000+i
+)*0.05;
+
+sky[i].style.top=
+y+"px";
+
+}
+
+},
+50
+);
+
+window.addEventListener(
+"resize",
+function(){
+
+world.style.width=
+window.innerWidth+
+"px";
+
+}
+);
+
+console.log(
+"LONG BUILDING V2"
+);
+
+    function makeSideBuilding(
+x,
+w,
+h
+){
+
+let b=
+document.createElement(
+"div"
+);
+
+b.style.position=
+"absolute";
+
+b.style.left=
+x+"px";
+
+b.style.bottom=
+"100px";
+
+b.style.width=
+w+"px";
+
+b.style.height=
+h+"px";
+
+b.style.background=
+"#3d6d90";
+
+b.style.borderTop=
+"6px solid #294d68";
+
+for(
+let r=0;
+r<8;
+r++
+){
+
+for(
+let c=0;
+c<3;
+c++
+){
+
+let win=
+document.createElement(
+"div"
+);
+
+win.style.position=
+"absolute";
+
+win.style.width=
+"16px";
+
+win.style.height=
+"20px";
+
+win.style.background=
+"#ffe56d";
+
+win.style.left=
+10+c*22+"px";
+
+win.style.top=
+10+r*28+"px";
+
+b.appendChild(
+win
+);
+
+}
+
+}
+
+world.appendChild(
+b
+);
+
+}
+
+makeSideBuilding(
+5,
+80,
+220
+);
+
+makeSideBuilding(
+105,
+90,
+300
+);
+
+makeSideBuilding(
+230,
+85,
+260
+);
+
+for(
+let i=0;
+i<30;
+i++
+){
+
+let g=
+document.createElement(
+"div"
+);
+
+g.style.position=
+"absolute";
+
+g.style.width=
+"4px";
+
+g.style.height=
+20+
+Math.random()*20+
+"px";
+
+g.style.background=
+"#239b23";
+
+g.style.left=
+Math.random()*400+
+"px";
+
+g.style.bottom=
+95+
+Math.random()*8+
+"px";
+
+world.appendChild(
+g
+);
+
+}
+
+for(
+let i=0;
+i<8;
+i++
+){
+
+let c=
+document.createElement(
+"div"
+);
+
+c.className=
+"cloud";
+
+c.style.left=
+Math.random()*450+
+"px";
+
+c.style.top=
+80+
+Math.random()*700+
+"px";
+
+world.appendChild(
+c
+);
+
+}
+
+function updateCamera(){
+
+let target=
+floorY-400;
+
+if(
+target<0
+){
+
+target=0;
+
+}
+
+cameraY+=
+(target-cameraY)*0.05;
+
+world.style.transform=
+"translateY("+
+cameraY+
+"px)";
+
+requestAnimationFrame(
+updateCamera
+);
+
+}
+
+updateCamera();
+
+    let badgeBox=
+document.createElement(
+"div"
+);
+
+badgeBox.style.position=
+"fixed";
+
+badgeBox.style.left=
+"50%";
+
+badgeBox.style.top=
+"50%";
+
+badgeBox.style.transform=
+"translate(-50%,-50%)";
+
+badgeBox.style.width=
+"260px";
+
+badgeBox.style.padding=
+"20px";
+
+badgeBox.style.background=
+"rgba(0,0,0,.85)";
+
+badgeBox.style.borderRadius=
+"20px";
+
+badgeBox.style.color=
+"white";
+
+badgeBox.style.textAlign=
+"center";
+
+badgeBox.style.display=
+"none";
+
+badgeBox.style.zIndex=
+"1000";
+
+document.body.appendChild(
+badgeBox
+);
+
+function showBadge(
+title,
+icon
+){
+
+badgeBox.innerHTML=
+
+"<div style='font-size:70px'>"+
+
+icon+
+
+"</div>"+
+
+"<br><b>"+
+
+title+
+
+"</b><br><br>Unlocked!";
+
+badgeBox.style.display=
+"block";
+
+setTimeout(
+function(){
+
+badgeBox.style.display=
+"none";
+
+},
+2500
+);
+
+}
+
+function updateBadgeStatus(){
+
+if(
+score>=50 &&
+!blueBadge
+){
+
+blueBadge=true;
+
+showBadge(
+"Blue Key Badge",
+"🔑"
+);
+
+}
+
+if(
+score>=100 &&
+!masterBadge
+){
+
+masterBadge=true;
+
+showBadge(
+"Master Badge",
+"🏅"
+);
+
+}
+
+if(
+score>=1000 &&
+!grandBadge
+){
+
+grandBadge=true;
+
+showBadge(
+"Grand Master Badge",
+"👑"
+);
+
+}
+
+if(
+document.getElementById(
+"b1"
+)
+&& blueBadge
+){
+
+document.getElementById(
+"b1"
+).innerHTML=
+"✅";
+
+}
+
+if(
+document.getElementById(
+"b2"
+)
+&& masterBadge
+){
+
+document.getElementById(
+"b2"
+).innerHTML=
+"✅";
+
+}
+
+if(
+document.getElementById(
+"b3"
+)
+&& grandBadge
+){
+
+document.getElementById(
+"b3"
+).innerHTML=
+"✅";
+
+}
+
+}
+
+setInterval(
+function(){
+
+updateBadgeStatus();
+
+},
+300
+);
+
+function updateScore(){
+
+scoreBox.innerHTML=
+score;
+
+updateBadgeStatus();
+
+}
+
+console.log(
+"PART 6 LOADED"
+);function animateSky(){
+
+let clouds=
+document.getElementsByClassName(
+"cloud"
+);
+
+for(
+let i=0;
+i<clouds.length;
+i++
+){
+
+let x=
+parseFloat(
+clouds[i].style.left
+);
+
+if(
+isNaN(x)
+){
+
+x=0;
+
+}
+
+x+=0.25;
+
+if(
+x>500
+){
+
+x=-150;
+
+}
+
+clouds[i].style.left=
+x+"px";
+
+}
+
+requestAnimationFrame(
+animateSky
+);
+
+}
+
+animateSky();
+
+function animateGrass(){
+
+let grass=
+document.querySelectorAll(
+"#world div"
+);
+
+for(
+let i=0;
+i<grass.length;
+i++
+){
+
+if(
+grass[i].style.background==
+"#239b23"
+){
+
+let r=
+Math.sin(
+Date.now()/300+i
+);
+
+grass[i].style.transform=
+"rotate("+
+r*2+
+"deg)";
+
+}
+
+}
+
+requestAnimationFrame(
+animateGrass
+);
+
+}
+
+animateGrass();
+
+function updateTower(){
+
+for(
+let i=0;
+i<tower.length;
+i++
+){
+
+tower[i].obj.style.boxShadow=
+
+"0px 3px 8px rgba(0,0,0,.3)";
+
+}
+
+requestAnimationFrame(
+updateTower
+);
+
+}
+
+updateTower();
+
+setInterval(
+
+function(){
+
+if(
+scoreBox
+){
+
+scoreBox.innerHTML=
+score;
+
+}
+
+},
+
+100
+
+);
+
+console.log(
+
+"PART 7 LOADED"
+
+);
+    let gameOver=false;
+
+function endGame(){
+
+if(
+gameOver
+)return;
+
+gameOver=true;
+
+build.disabled=true;
+
+x2.disabled=true;
+
+setTimeout(
+function(){
+
+alert(
+"Game Over!\n\nFloors Built: "+
+score
+);
+
+location.reload();
+
+},
+1200
+);
+
+}
+
+function shakeTower(){
+
+for(
+let i=0;
+i<tower.length;
+i++
+){
+
+tower[i].obj.style.transform=
+
+"rotate("+
+
+(Math.random()*2-1)+
+
+"deg)";
+
+}
+
+setTimeout(
+function(){
+
+for(
+let i=0;
+i<tower.length;
+i++
+){
+
+tower[i].obj.style.transform=
+"rotate(0deg)";
+
+}
+
+},
+150
+);
+
+}
+
+function createFloatingText(
+txt
+){
+
+let t=
+document.createElement(
+"div"
+);
+
+t.innerHTML=
+txt;
+
+t.style.position=
+"fixed";
+
+t.style.left=
+"50%";
+
+t.style.top=
+"120px";
+
+t.style.transform=
+"translateX(-50%)";
+
+t.style.color=
+"yellow";
+
+t.style.fontSize=
+"30px";
+
+t.style.fontWeight=
+"bold";
+
+t.style.zIndex=
+"999";
+
+document.body.appendChild(
+t
+);
+
+setTimeout(
+function(){
+
+t.remove();
+
+},
+1000
+);
+
+}
+
+function perfectPlacement(
+diff
+){
+
+return diff<=8;
+
+}
+
+let oldBuild=
+build.onclick;
+
+build.onclick=
+function(){
+
+if(
+gameOver
+)return;
+
+if(
+!movingFloor
+)return;
+
+let last=
+tower[
+tower.length-1
+];
+
+let diff=
+Math.abs(
+moveX-last.x
+);
+
+if(
+diff>60
+){
+
+shakeTower();
+
+endGame();
+
+return;
+
+}
+
+if(
+perfectPlacement(diff)
+){
+
+createFloatingText(
+"PERFECT!"
+);
+
+}
+
+oldBuild();
+
+};
+
+console.log(
+"PART 8 LOADED"
+);
