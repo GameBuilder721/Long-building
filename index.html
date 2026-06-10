@@ -1,59 +1,703 @@
 <!DOCTYPE html>
-);
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-badgePage.style.display=
-"none";
+<title>Long Building Game</title>
 
-badgePage.style.position=
-"fixed";
+<style>
 
-badgePage.style.left="0";
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-badgePage.style.top="0";
+body{
+overflow:hidden;
+background:#66d0ff;
+font-family:Arial;
+}
 
-badgePage.style.width="100%";
+#sky{
+position:fixed;
+width:100%;
+height:100%;
+background:linear-gradient(#5fd5ff,#9ee7ff);
+}
 
-badgePage.style.height="100%";
+.cloud{
+position:absolute;
+background:white;
+border-radius:50px;
+opacity:.9;
+}
 
-badgePage.style.background=
-"#222";
+#cloud1{
+width:80px;
+height:35px;
+top:70px;
+left:20px;
+}
 
-badgePage.style.color=
-"white";
+#cloud2{
+width:100px;
+height:40px;
+top:140px;
+right:20px;
+}
 
-badgePage.style.zIndex=
-500;
+#cloud3{
+width:70px;
+height:30px;
+top:220px;
+left:120px;
+}
 
-badgePage.style.textAlign=
-"center";
+#tower{
+position:absolute;
+bottom:100px;
+left:50%;
+transform:translateX(-50%);
+width:180px;
+}
 
-badgePage.innerHTML=
+.floor{
+width:180px;
+height:80px;
+background:#083f67;
+border-top:4px solid #2b8fb4;
+border-bottom:4px solid #04253f;
+margin-top:-2px;
+position:relative;
+}
 
-"<h1 style='margin-top:30px'>BADGES</h1>"+
+.floor:before{
+content:"";
+position:absolute;
+top:18px;
+left:20px;
+width:25px;
+height:35px;
+background:#ffe86d;
+box-shadow:
+45px 0 #ffe86d,
+90px 0 #ffe86d,
+135px 0 #ffe86d;
+}
 
-"<br><br>"+
+#grass{
+position:fixed;
+bottom:0;
+width:100%;
+height:100px;
+background:#3ecf44;
+}
 
-"Blue Key <span id='b1'>❌</span>"+
+#score{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+font-size:40px;
+font-weight:bold;
+color:white;
+text-shadow:2px 2px black;
+}
 
-"<br><br><br>"+
+#buttons{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:10px;
+z-index:100;
+}
 
-"Master <span id='b2'>❌</span>"+
+button{
+border:none;
+font-weight:bold;
+cursor:pointer;
+}
 
-"<br><br><br>"+
+#build{
+width:170px;
+height:60px;
+font-size:30px;
+background:gold;
+border-radius:20px;
+}
 
-"Grand Master <span id='b3'>❌</span>"+
+#double{
+width:70px;
+height:60px;
+font-size:24px;
+background:orange;
+border-radius:20px;
+}
 
-"<br><br><br>"+
+#menu{
+position:fixed;
+top:20px;
+left:20px;
+display:flex;
+gap:10px;
+}
 
-"<button id='backBadge' style='width:150px;height:50px'>BACK</button>";
+.small{
+width:90px;
+height:45px;
+border-radius:12px;
+background:white;
+font-size:18px;
+}
 
-document.body.appendChild(
-badgePage
-);
+</style>
+</head>
 
+<body>
+
+<div id="sky">
+
+<div id="cloud1" class="cloud"></div>
+<div id="cloud2" class="cloud"></div>
+<div id="cloud3" class="cloud"></div>
+
+</div>
+
+<div id="score">0</div>
+
+<div id="menu">
+<button class="small">Home</button>
+<button class="small">Badges</button>
+</div>
+
+<div id="tower">
+
+<div class="floor"></div>
+
+</div>
+
+<div id="grass"></div>
+
+<div id="buttons">
+
+<button id="build">
+BUILD
+</button>
+
+<button id="double">
+2X
+</button>
+
+</div>
+
+<script>
+
+let score=0;
+
+const tower=document.getElementById("tower");
+const scoreText=document.getElementById("score");
+
+document.getElementById("build").onclick=function(){
+
+score++;
+
+scoreText.innerHTML=score;
+
+let floor=document.createElement("div");
+
+floor.className="floor";
+
+tower.prepend(floor);
+
+};
+
+</script>
+
+</body>
+</html>
+<script>
+
+let score=0;
+
+let tower=
 document.getElementById(
-"badges"
-).onclick=
+"tower"
+);
+
+let scoreText=
+document.getElementById(
+"score"
+);
+
+let doubleMode=false;
+
+let doubleTime=0;
+
+let doubleBtn=
+document.getElementById(
+"double"
+);
+
+let buildBtn=
+document.getElementById(
+"build"
+);
+
+function updateScore(){
+
+scoreText.innerHTML=
+score;
+
+}
+
+function addFloor(){
+
+let floor=
+document.createElement(
+"div"
+);
+
+floor.className=
+"floor";
+
+tower.prepend(
+floor
+);
+
+}
+
+buildBtn.onclick=function(){
+
+let amount=1;
+
+if(
+doubleMode
+){
+
+amount=2;
+
+}
+
+for(
+let i=0;
+i<amount;
+i++
+){
+
+score++;
+
+addFloor();
+
+}
+
+updateScore();
+
+};
+
+doubleBtn.onclick=function(){
+
+if(
+doubleMode
+){
+
+return;
+
+}
+
+doubleMode=true;
+
+doubleTime=900;
+
+let timer=
+setInterval(
+
+function(){
+
+doubleTime--;
+
+let min=
+Math.floor(
+doubleTime/60
+);
+
+let sec=
+doubleTime%60;
+
+doubleBtn.innerHTML=
+
+min+
+
+":"+
+
+(
+sec<10
+?
+
+"0"+sec
+
+:
+
+sec
+
+);
+
+if(
+doubleTime<=0
+){
+
+clearInterval(
+timer
+);
+
+doubleMode=false;
+
+doubleBtn.innerHTML=
+"2X";
+
+}
+
+},
+
+1000
+
+);
+
+};
+
+function moveClouds(){
+
+let c1=
+document.getElementById(
+"cloud1"
+);
+
+let c2=
+document.getElementById(
+"cloud2"
+);
+
+let c3=
+document.getElementById(
+"cloud3"
+);
+
+let x1=
+parseInt(
+c1.style.left||20
+);
+
+let x2=
+parseInt(
+c2.style.right||20
+);
+
+let x3=
+parseInt(
+c3.style.left||120
+);
+
+x1++;
+
+x2++;
+
+x3++;
+
+if(
+x1>450
+)x1=-100;
+
+if(
+x2>450
+)x2=-100;
+
+if(
+x3>450
+)x3=-100;
+
+c1.style.left=
+x1+"px";
+
+c2.style.right=
+x2+"px";
+
+c3.style.left=
+x3+"px";
+
+requestAnimationFrame(
+moveClouds
+);
+
+}
+
+moveClouds();
+
+updateScore();
+
+</script>
+#leftCity{
+position:fixed;
+left:10px;
+bottom:100px;
+width:80px;
+height:240px;
+background:#0a4d76;
+}
+
+#rightCity{
+position:fixed;
+right:10px;
+bottom:100px;
+width:80px;
+height:240px;
+background:#0a4d76;
+}
+
+#leftCity:before,
+#rightCity:before{
+
+content:"";
+
+position:absolute;
+
+left:12px;
+
+top:15px;
+
+width:14px;
+
+height:20px;
+
+background:#ffe86d;
+
+box-shadow:
+
+22px 0 #ffe86d,
+44px 0 #ffe86d,
+
+0 32px #ffe86d,
+22px 32px #ffe86d,
+44px 32px #ffe86d,
+
+0 64px #ffe86d,
+22px 64px #ffe86d,
+44px 64px #ffe86d,
+
+0 96px #ffe86d,
+22px 96px #ffe86d,
+44px 96px #ffe86d,
+
+0 128px #ffe86d,
+22px 128px #ffe86d,
+44px 128px #ffe86d;
+
+}
+
+.grassBlade{
+
+position:fixed;
+
+bottom:95px;
+
+width:4px;
+
+background:#208a20;
+
+border-radius:5px;
+
+}
+<div id="badgePage">
+
+<h2>BADGES</h2>
+
+<div class="badgeBox">
+
+🔑 Blue Key
+
+<span id="secretTick">
+❌
+</span>
+
+</div>
+
+<div class="badgeBox">
+
+🏅 Master
+
+<span id="masterTick">
+❌
+</span>
+
+</div>
+
+<div class="badgeBox">
+
+👑 Grandmaster
+
+<span id="grandTick">
+❌
+</span>
+
+</div>
+
+<button id="closeBadges">
+
+HOME
+
+</button>
+
+</div>
+
+<div id="helpPage">
+
+<div id="paper">
+
+<button id="closeHelp">
+
+❌
+
+</button>
+
+<h2>
+
+Welcome! to the Long Building Game
+
+</h2>
+
+<br>
+
+<p>
+
+• Start the game from the Play button.
+
+</p>
+
+<br>
+
+<p>
+
+• Stack the building through Build button.
+
+</p>
+
+<br>
+
+<p>
+
+• Reach 1000 floors and get the Grandmaster Badge.
+
+</p>
+
+</div>
+
+</div>
+#badgePage{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:#66d0ff;
+
+display:none;
+
+z-index:500;
+
+text-align:center;
+
+padding-top:50px;
+
+}
+
+.badgeBox{
+
+width:90%;
+
+margin:auto;
+
+margin-top:20px;
+
+height:70px;
+
+background:white;
+
+border-radius:20px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:20px;
+
+font-size:24px;
+
+}
+
+#helpPage{
+
+position:fixed;
+
+width:100%;
+
+height:100%;
+
+display:none;
+
+justify-content:center;
+
+align-items:center;
+
+background:rgba(0,0,0,.5);
+
+z-index:600;
+
+}
+
+#paper{
+
+width:85%;
+
+background:#ffe76b;
+
+padding:20px;
+
+border-radius:20px;
+
+}
+
+#closeHelp{
+
+float:right;
+
+width:40px;
+
+height:40px;
+
+}
+let badgePage=
+document.getElementById(
+"badgePage"
+);
+
+let helpPage=
+document.getElementById(
+"helpPage"
+);
+
+document.querySelectorAll(
+".small"
+)[1].onclick=
 function(){
 
 badgePage.style.display=
@@ -61,936 +705,181 @@ badgePage.style.display=
 
 };
 
-document.addEventListener(
-"click",
-function(e){
-
-if(
-e.target &&
-e.target.id=="backBadge"
-){
+document.querySelectorAll(
+".small"
+)[0].onclick=
+function(){
 
 badgePage.style.display=
 "none";
 
-}
-
-});
-
-setInterval(
-function(){
-
-if(
-blueBadge
-){
+};
 
 document.getElementById(
-"b1"
-).innerHTML=
-"✅";
-
-}
-
-if(
-masterBadge
-){
-
-document.getElementById(
-"b2"
-).innerHTML=
-"✅";
-
-}
-
-if(
-grandBadge
-){
-
-document.getElementById(
-"b3"
-).innerHTML=
-"✅";
-
-}
-
-checkBadges();
-
-},
-500
-);
-
-setInterval(
-function(){
-
-let c=
-document.getElementsByClassName(
-"cloud"
-);
-
-for(
-let i=0;
-i<c.length;
-i++
-){
-
-let x=
-parseFloat(
-c[i].style.left
-);
-
-x+=0.2;
-
-if(
-x>500
-){
-
-x=-150;
-
-}
-
-c[i].style.left=
-x+"px";
-
-}
-
-},
-40
-);
-    document.getElementById(
-"home"
+"closeBadges"
 ).onclick=
 function(){
 
-location.reload();
+badgePage.style.display=
+"none";
 
 };
 
-x2.onclick=
+document.getElementById(
+"closeHelp"
+).onclick=
 function(){
 
-if(
-!playing
-)return;
+helpPage.style.display=
+"none";
+
+};
+
+function updateBadges(){
 
 if(
-!movingFloor
-)return;
-
-let last=
-tower[
-tower.length-1
-];
-
-let diff=
-Math.abs(
-moveX-last.x
-);
-
-if(
-diff>60
+score>=50
 ){
 
-movingFloor.style.transition=
-"1s";
+document.getElementById(
+"secretTick"
+).innerHTML=
+"✅";
 
-movingFloor.style.transform=
-"rotate(25deg) translateY(500px)";
+}
 
-setTimeout(
-function(){
+if(
+score>=100
+){
 
-alert(
-"GAME OVER\n\nFLOORS : "+
-score
+document.getElementById(
+"masterTick"
+).innerHTML=
+"✅";
+
+}
+
+if(
+score>=1000
+){
+
+document.getElementById(
+"grandTick"
+).innerHTML=
+"✅";
+
+}
+
+}
+
+setInterval(
+updateBadges,
+500
+);
+.movingFloor{
+
+position:absolute;
+
+width:180px;
+
+height:80px;
+
+background:#0b4d78;
+
+border-top:4px solid #2a9fd6;
+
+border-bottom:4px solid #04253f;
+
+}
+
+.movingFloor:before{
+
+content:"";
+
+position:absolute;
+
+top:18px;
+
+left:20px;
+
+width:25px;
+
+height:35px;
+
+background:#ffe86d;
+
+box-shadow:
+45px 0 #ffe86d,
+90px 0 #ffe86d,
+135px 0 #ffe86d;
+
+}
+let movingFloor=
+document.createElement(
+"div"
 );
 
-location.reload();
+movingFloor.className=
+"movingFloor";
 
-},
-1000
+document.body.appendChild(
+movingFloor
 );
 
-return;
+let moveX=20;
+
+let dir=1;
+
+let floorLevel=0;
+
+function animateFloor(){
+
+moveX+=dir*3;
+
+if(moveX>window.innerWidth-200){
+
+dir=-1;
+
+}
+
+if(moveX<20){
+
+dir=1;
 
 }
 
 movingFloor.style.left=
 moveX+"px";
 
-tower.push({
+movingFloor.style.bottom=
+(180+floorLevel*78)+"px";
 
-x:moveX,
+requestAnimationFrame(
+animateFloor
+);
 
-y:floorY,
+}
 
-obj:movingFloor
+animateFloor();
 
-});
+buildBtn.onclick=function(){
+
+let amount=doubleMode?2:1;
+
+for(
+let i=0;
+i<amount;
+i++
+){
 
 score++;
 
-score++;
+updateScore();
 
-scoreBox.innerHTML=
-score;
+addFloor();
 
-movingFloor=null;
+floorLevel++;
 
-floorY+=140;
-
-moveX=
-tower[
-tower.length-1
-].x;
-
-spawnFloor();
+}
 
 };
-
-setInterval(
-function(){
-
-let sky=
-document.getElementsByClassName(
-"cloud"
-);
-
-for(
-let i=0;
-i<sky.length;
-i++
-){
-
-let y=
-parseFloat(
-sky[i].style.top
-);
-
-y+=
-Math.sin(
-Date.now()/1000+i
-)*0.05;
-
-sky[i].style.top=
-y+"px";
-
-}
-
-},
-50
-);
-
-window.addEventListener(
-"resize",
-function(){
-
-world.style.width=
-window.innerWidth+
-"px";
-
-}
-);
-
-console.log(
-"LONG BUILDING V2"
-);
-
-    function makeSideBuilding(
-x,
-w,
-h
-){
-
-let b=
-document.createElement(
-"div"
-);
-
-b.style.position=
-"absolute";
-
-b.style.left=
-x+"px";
-
-b.style.bottom=
-"100px";
-
-b.style.width=
-w+"px";
-
-b.style.height=
-h+"px";
-
-b.style.background=
-"#3d6d90";
-
-b.style.borderTop=
-"6px solid #294d68";
-
-for(
-let r=0;
-r<8;
-r++
-){
-
-for(
-let c=0;
-c<3;
-c++
-){
-
-let win=
-document.createElement(
-"div"
-);
-
-win.style.position=
-"absolute";
-
-win.style.width=
-"16px";
-
-win.style.height=
-"20px";
-
-win.style.background=
-"#ffe56d";
-
-win.style.left=
-10+c*22+"px";
-
-win.style.top=
-10+r*28+"px";
-
-b.appendChild(
-win
-);
-
-}
-
-}
-
-world.appendChild(
-b
-);
-
-}
-
-makeSideBuilding(
-5,
-80,
-220
-);
-
-makeSideBuilding(
-105,
-90,
-300
-);
-
-makeSideBuilding(
-230,
-85,
-260
-);
-
-for(
-let i=0;
-i<30;
-i++
-){
-
-let g=
-document.createElement(
-"div"
-);
-
-g.style.position=
-"absolute";
-
-g.style.width=
-"4px";
-
-g.style.height=
-20+
-Math.random()*20+
-"px";
-
-g.style.background=
-"#239b23";
-
-g.style.left=
-Math.random()*400+
-"px";
-
-g.style.bottom=
-95+
-Math.random()*8+
-"px";
-
-world.appendChild(
-g
-);
-
-}
-
-for(
-let i=0;
-i<8;
-i++
-){
-
-let c=
-document.createElement(
-"div"
-);
-
-c.className=
-"cloud";
-
-c.style.left=
-Math.random()*450+
-"px";
-
-c.style.top=
-80+
-Math.random()*700+
-"px";
-
-world.appendChild(
-c
-);
-
-}
-
-function updateCamera(){
-
-let target=
-floorY-400;
-
-if(
-target<0
-){
-
-target=0;
-
-}
-
-cameraY+=
-(target-cameraY)*0.05;
-
-world.style.transform=
-"translateY("+
-cameraY+
-"px)";
-
-requestAnimationFrame(
-updateCamera
-);
-
-}
-
-updateCamera();
-
-    let badgeBox=
-document.createElement(
-"div"
-);
-
-badgeBox.style.position=
-"fixed";
-
-badgeBox.style.left=
-"50%";
-
-badgeBox.style.top=
-"50%";
-
-badgeBox.style.transform=
-"translate(-50%,-50%)";
-
-badgeBox.style.width=
-"260px";
-
-badgeBox.style.padding=
-"20px";
-
-badgeBox.style.background=
-"rgba(0,0,0,.85)";
-
-badgeBox.style.borderRadius=
-"20px";
-
-badgeBox.style.color=
-"white";
-
-badgeBox.style.textAlign=
-"center";
-
-badgeBox.style.display=
-"none";
-
-badgeBox.style.zIndex=
-"1000";
-
-document.body.appendChild(
-badgeBox
-);
-
-function showBadge(
-title,
-icon
-){
-
-badgeBox.innerHTML=
-
-"<div style='font-size:70px'>"+
-
-icon+
-
-"</div>"+
-
-"<br><b>"+
-
-title+
-
-"</b><br><br>Unlocked!";
-
-badgeBox.style.display=
-"block";
-
-setTimeout(
-function(){
-
-badgeBox.style.display=
-"none";
-
-},
-2500
-);
-
-}
-
-function updateBadgeStatus(){
-
-if(
-score>=50 &&
-!blueBadge
-){
-
-blueBadge=true;
-
-showBadge(
-"Blue Key Badge",
-"🔑"
-);
-
-}
-
-if(
-score>=100 &&
-!masterBadge
-){
-
-masterBadge=true;
-
-showBadge(
-"Master Badge",
-"🏅"
-);
-
-}
-
-if(
-score>=1000 &&
-!grandBadge
-){
-
-grandBadge=true;
-
-showBadge(
-"Grand Master Badge",
-"👑"
-);
-
-}
-
-if(
-document.getElementById(
-"b1"
-)
-&& blueBadge
-){
-
-document.getElementById(
-"b1"
-).innerHTML=
-"✅";
-
-}
-
-if(
-document.getElementById(
-"b2"
-)
-&& masterBadge
-){
-
-document.getElementById(
-"b2"
-).innerHTML=
-"✅";
-
-}
-
-if(
-document.getElementById(
-"b3"
-)
-&& grandBadge
-){
-
-document.getElementById(
-"b3"
-).innerHTML=
-"✅";
-
-}
-
-}
-
-setInterval(
-function(){
-
-updateBadgeStatus();
-
-},
-300
-);
-
-function updateScore(){
-
-scoreBox.innerHTML=
-score;
-
-updateBadgeStatus();
-
-}
-
-console.log(
-"PART 6 LOADED"
-);function animateSky(){
-
-let clouds=
-document.getElementsByClassName(
-"cloud"
-);
-
-for(
-let i=0;
-i<clouds.length;
-i++
-){
-
-let x=
-parseFloat(
-clouds[i].style.left
-);
-
-if(
-isNaN(x)
-){
-
-x=0;
-
-}
-
-x+=0.25;
-
-if(
-x>500
-){
-
-x=-150;
-
-}
-
-clouds[i].style.left=
-x+"px";
-
-}
-
-requestAnimationFrame(
-animateSky
-);
-
-}
-
-animateSky();
-
-function animateGrass(){
-
-let grass=
-document.querySelectorAll(
-"#world div"
-);
-
-for(
-let i=0;
-i<grass.length;
-i++
-){
-
-if(
-grass[i].style.background==
-"#239b23"
-){
-
-let r=
-Math.sin(
-Date.now()/300+i
-);
-
-grass[i].style.transform=
-"rotate("+
-r*2+
-"deg)";
-
-}
-
-}
-
-requestAnimationFrame(
-animateGrass
-);
-
-}
-
-animateGrass();
-
-function updateTower(){
-
-for(
-let i=0;
-i<tower.length;
-i++
-){
-
-tower[i].obj.style.boxShadow=
-
-"0px 3px 8px rgba(0,0,0,.3)";
-
-}
-
-requestAnimationFrame(
-updateTower
-);
-
-}
-
-updateTower();
-
-setInterval(
-
-function(){
-
-if(
-scoreBox
-){
-
-scoreBox.innerHTML=
-score;
-
-}
-
-},
-
-100
-
-);
-
-console.log(
-
-"PART 7 LOADED"
-
-);
-    let gameOver=false;
-
-function endGame(){
-
-if(
-gameOver
-)return;
-
-gameOver=true;
-
-build.disabled=true;
-
-x2.disabled=true;
-
-setTimeout(
-function(){
-
-alert(
-"Game Over!\n\nFloors Built: "+
-score
-);
-
-location.reload();
-
-},
-1200
-);
-
-}
-
-function shakeTower(){
-
-for(
-let i=0;
-i<tower.length;
-i++
-){
-
-tower[i].obj.style.transform=
-
-"rotate("+
-
-(Math.random()*2-1)+
-
-"deg)";
-
-}
-
-setTimeout(
-function(){
-
-for(
-let i=0;
-i<tower.length;
-i++
-){
-
-tower[i].obj.style.transform=
-"rotate(0deg)";
-
-}
-
-},
-150
-);
-
-}
-
-function createFloatingText(
-txt
-){
-
-let t=
-document.createElement(
-"div"
-);
-
-t.innerHTML=
-txt;
-
-t.style.position=
-"fixed";
-
-t.style.left=
-"50%";
-
-t.style.top=
-"120px";
-
-t.style.transform=
-"translateX(-50%)";
-
-t.style.color=
-"yellow";
-
-t.style.fontSize=
-"30px";
-
-t.style.fontWeight=
-"bold";
-
-t.style.zIndex=
-"999";
-
-document.body.appendChild(
-t
-);
-
-setTimeout(
-function(){
-
-t.remove();
-
-},
-1000
-);
-
-}
-
-function perfectPlacement(
-diff
-){
-
-return diff<=8;
-
-}
-
-let oldBuild=
-build.onclick;
-
-build.onclick=
-function(){
-
-if(
-gameOver
-)return;
-
-if(
-!movingFloor
-)return;
-
-let last=
-tower[
-tower.length-1
-];
-
-let diff=
-Math.abs(
-moveX-last.x
-);
-
-if(
-diff>60
-){
-
-shakeTower();
-
-endGame();
-
-return;
-
-}
-
-if(
-perfectPlacement(diff)
-){
-
-createFloatingText(
-"PERFECT!"
-);
-
-}
-
-oldBuild();
-
-};
-
-console.log(
-"PART 8 LOADED"
-);
