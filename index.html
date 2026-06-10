@@ -99,7 +99,29 @@ border-radius:20px;
 background:gold;
 z-index:100;
 }
+#doubleBtn{
+position:fixed;
+bottom:115px;
+right:20px;
+width:80px;
+height:50px;
+font-size:24px;
+background:red;
+color:white;
+border:none;
+border-radius:15px;
+z-index:100;
+}
 
+#timer{
+position:fixed;
+bottom:175px;
+right:20px;
+font-size:22px;
+color:white;
+font-weight:bold;
+z-index:100;
+  }
 </style>
 
 </head>
@@ -130,11 +152,15 @@ BADGES
 <button id="buildBtn">
 BUILD
 </button>
+<button id="doubleBtn">2X</button>
 
+<div id="timer">15:00</div>
 <script>
 
 let score=0;
-
+let doubleMode=false;
+let timeLeft=0;
+let timerInterval;
 let tower=document.getElementById("tower");
 let scoreBox=document.getElementById("score");
 
@@ -159,14 +185,49 @@ tower.prepend(floor);
 
 document.getElementById("buildBtn").onclick=function(){
 
-score++;
+let amount=doubleMode?2:1;
+
+score+=amount;
 
 scoreBox.innerHTML=score;
 
+for(let i=0;i<amount;i++){
 makeFloor();
+}
 
 };
+document.getElementById("doubleBtn").onclick=function(){
 
+if(doubleMode)return;
+
+doubleMode=true;
+
+timeLeft=900;
+
+timerInterval=setInterval(function(){
+
+timeLeft--;
+
+let m=Math.floor(timeLeft/60);
+let s=timeLeft%60;
+
+if(s<10)s="0"+s;
+
+document.getElementById("timer").innerHTML=m+":"+s;
+
+if(timeLeft<=0){
+
+clearInterval(timerInterval);
+
+doubleMode=false;
+
+document.getElementById("timer").innerHTML="15:00";
+
+}
+
+},1000);
+
+}
 makeFloor();
   </script>
 
