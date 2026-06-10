@@ -245,3 +245,62 @@ badgePage.style.display="block";
 document.getElementById("closeBadge").onclick=function(){
 badgePage.style.display="none";
 };
+window.onload=function(){
+
+let badgePage=document.createElement("div");
+
+badgePage.id="badgePage";
+
+badgePage.style.position="fixed";
+badgePage.style.top="0";
+badgePage.style.left="0";
+badgePage.style.width="100%";
+badgePage.style.height="100%";
+badgePage.style.background="#87CEEB";
+badgePage.style.display="none";
+badgePage.style.zIndex="999";
+
+badgePage.innerHTML=`
+<div style="padding-top:60px;text-align:center;">
+
+<h1>BADGES</h1>
+
+<br>
+
+<h2>🔒 Secret Badge (50 Floors)</h2>
+
+<br>
+
+<h2>🔒 Master Badge (100 Floors)</h2>
+
+<br>
+
+<h2>🔒 Grandmaster Badge (1000 Floors)</h2>
+
+<br><br>
+
+<button id="closeBadge"
+style="font-size:24px;padding:10px 30px;">
+HOME
+</button>
+
+</div>
+`;
+
+document.body.appendChild(badgePage);
+
+document.getElementById("badges").addEventListener(
+"click",
+function(){
+badgePage.style.display="block";
+}
+);
+
+document.getElementById("closeBadge").addEventListener(
+"click",
+function(){
+badgePage.style.display="none";
+}
+);
+
+};
