@@ -1,1 +1,141 @@
-<!
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Long Building Game</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+overflow:hidden;
+font-family:Arial;
+background:#67d5ff;
+}
+
+#sky{
+position:fixed;
+width:100%;
+height:100%;
+background:linear-gradient(#67d5ff,#9ce8ff);
+}
+
+#score{
+position:fixed;
+top:20px;
+width:100%;
+text-align:center;
+font-size:70px;
+font-weight:bold;
+color:white;
+text-shadow:3px 3px black;
+z-index:100;
+}
+
+#menu{
+position:fixed;
+top:110px;
+width:100%;
+text-align:center;
+z-index:100;
+}
+
+.small{
+width:120px;
+height:50px;
+font-size:20px;
+margin:5px;
+border:none;
+border-radius:15px;
+}
+
+#tower{
+position:fixed;
+bottom:120px;
+left:50%;
+transform:translateX(-50%);
+width:160px;
+}
+
+.floor{
+width:160px;
+height:70px;
+background:#0d4f7c;
+border-top:4px solid #2da6d7;
+border-bottom:4px solid #08324e;
+margin-top:2px;
+position:relative;
+}
+
+.window{
+position:absolute;
+width:22px;
+height:30px;
+background:#ffe96b;
+top:18px;
+}
+
+#buildBtn{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+width:180px;
+height:80px;
+font-size:32px;
+font-weight:bold;
+border:none;
+border-radius:20px;
+background:gold;
+z-index:100;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="sky"></div>
+
+<div id="score">
+0
+</div>
+
+<div id="menu">
+
+<button class="small" id="home">
+HOME
+</button>
+
+<button class="small" id="badges">
+BADGES
+</button>
+
+</div>
+
+<div id="tower">
+</div>
+
+<button id="buildBtn">
+BUILD
+</button>
+
+<script>
+
+let score=0;
+
+let tower=document.getElementById("tower");
+let scoreBox=document.getElementById("score");
+
+</script>
+
+</body>
+</html>
