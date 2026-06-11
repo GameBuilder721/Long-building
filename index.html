@@ -2,9 +2,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
 
-<title>Long Building Game</title>
+<title>Long Building</title>
 
 <style>
 
@@ -17,118 +18,141 @@ box-sizing:border-box;
 body{
 overflow:hidden;
 font-family:Arial;
-background:#67d5ff;
-}
-
-#sky{
-position:fixed;
-width:100%;
-height:100%;
-background:linear-gradient(#67d5ff,#9ce8ff);
+background:linear-gradient(
+#6bd5ff,
+#b5f2ff
+);
 }
 
 #score{
+
 position:fixed;
+
 top:20px;
+
 width:100%;
+
 text-align:center;
-font-size:70px;
+
+font-size:50px;
+
 font-weight:bold;
+
 color:white;
-text-shadow:3px 3px black;
-z-index:100;
+
+text-shadow:2px 2px black;
+
 }
 
 #menu{
+
 position:fixed;
-top:110px;
+
+top:90px;
+
 width:100%;
+
 text-align:center;
-z-index:100;
+
 }
 
-  .small{
+.small{
+
 width:120px;
+
 height:45px;
-margin:5px;
-font-size:20px;
-font-weight:bold;
+
+background:gold;
+
 border:none;
+
 border-radius:15px;
-background:yellow !important;
-color:black;
+
+font-size:20px;
+
+font-weight:bold;
+
+margin:5px;
+
 }
 
 #tower{
+
 position:fixed;
+
 bottom:120px;
+
 left:50%;
+
 transform:translateX(-50%);
+
 width:160px;
+
 }
 
 .floor{
+
 width:160px;
+
 height:70px;
-background:#0d4f7c;
-border-top:4px solid #2da6d7;
-border-bottom:4px solid #08324e;
+
+background:#0b4d78;
+
+border-top:4px solid #30a8da;
+
+border-bottom:4px solid #062942;
+
 margin-top:2px;
+
 position:relative;
+
 }
 
 .window{
+
 position:absolute;
+
 width:22px;
+
 height:30px;
+
 background:#ffe96b;
+
 top:18px;
+
 }
 
 #buildBtn{
+
 position:fixed;
+
 bottom:20px;
+
 left:50%;
+
 transform:translateX(-50%);
+
 width:180px;
-height:80px;
-font-size:32px;
-font-weight:bold;
-border:none;
-border-radius:20px;
+
+height:70px;
+
 background:gold;
-z-index:100;
-}
-#doubleBtn{
-position:fixed;
-bottom:115px;
-right:20px;
-width:80px;
-height:50px;
-font-size:24px;
-background:red;
-color:white;
+
 border:none;
-border-radius:15px;
-z-index:100;
+
+border-radius:20px;
+
+font-size:30px;
+
+font-weight:bold;
+
 }
 
-#timer{
-position:fixed;
-bottom:175px;
-right:20px;
-font-size:22px;
-color:white;
-font-weight:bold;
-z-index:100;
-  }
 </style>
 
 </head>
 
 <body>
-
-<div id="sky"></div>
 
 <div id="score">
 0
@@ -136,11 +160,15 @@ z-index:100;
 
 <div id="menu">
 
-<button class="small" id="home">
+<button
+class="small"
+id="home">
 HOME
 </button>
 
-<button class="small" id="badges">
+<button
+class="small"
+id="badges">
 BADGES
 </button>
 
@@ -152,85 +180,78 @@ BADGES
 <button id="buildBtn">
 BUILD
 </button>
-<button id="doubleBtn">2X</button>
 
-<div id="timer">01:00</div>
 <script>
 
 let score=0;
-let doubleMode=false;
-let timeLeft=0;
-let timerInterval;
-let tower=document.getElementById("tower");
-let scoreBox=document.getElementById("score");
+
+let tower=
+document.getElementById(
+"tower"
+);
+
+let scoreBox=
+document.getElementById(
+"score"
+);
 
 function makeFloor(){
 
-let floor=document.createElement("div");
-floor.className="floor";
+let floor=
+document.createElement(
+"div"
+);
 
-for(let i=0;i<4;i++){
+floor.className=
+"floor";
 
-let w=document.createElement("div");
-w.className="window";
-w.style.left=(15+i*35)+"px";
+for(
+let i=0;
+i<4;
+i++
+){
 
-floor.appendChild(w);
+let w=
+document.createElement(
+"div"
+);
+
+w.className=
+"window";
+
+w.style.left=
+(15+i*35)+"px";
+
+floor.appendChild(
+w
+);
 
 }
 
-tower.prepend(floor);
+tower.prepend(
+floor
+);
 
 }
 
-document.getElementById("buildBtn").onclick=function(){
+document
+.getElementById(
+"buildBtn"
+)
+.onclick=function(){
 
-let amount=doubleMode?2:1;
+score++;
 
-score+=amount;
+scoreBox.innerHTML=
+score;
 
-scoreBox.innerHTML=score;
-
-for(let i=0;i<amount;i++){
 makeFloor();
-}
 
 };
-document.getElementById("doubleBtn").onclick=function(){
 
-if(doubleMode)return;
-
-doubleMode=true;
-
-timeLeft=60;
-
-timerInterval=setInterval(function(){
-
-timeLeft--;
-
-let m=Math.floor(timeLeft/60);
-let s=timeLeft%60;
-
-if(s<10)s="0"+s;
-
-document.getElementById("timer").innerHTML=m+":"+s;
-
-if(timeLeft<=0){
-
-clearInterval(timerInterval);
-
-doubleMode=false;
-
-document.getElementById("timer").innerHTML="01:00";
-
-}
-
-},1000);
-
-}
 makeFloor();
-  </script>
+
+</script>
 
 </body>
-
 </html>
