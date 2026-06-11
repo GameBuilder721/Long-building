@@ -1,84 +1,77 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
+<div id="score">0</div>
 
-<title>Long Building</title>
+<div id="menu">
 
-<style>
+<button class="small" id="home">
+HOME
+</button>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+<button class="small" id="badges">
+BADGES
+</button>
 
+<button class="small" id="how">
+HOW TO PLAY
+</button>
+
+</div>
+
+<div id="tower"></div>
+
+<button id="playBtn">
+▶ PLAY
+</button>
 body{
-overflow:auto;
+margin:0;
+background:#e8e8e8;
 font-family:Arial;
-background:linear-gradient(
-#6bd5ff,
-#b5f2ff
-);
+overflow:hidden;
 }
 
 #score{
-
 position:fixed;
-
 top:20px;
-
-width:100%;
-
-text-align:center;
-
+left:50%;
+transform:translateX(-50%);
 font-size:50px;
-
-font-weight:bold;
-
-color:white;
-
-text-shadow:2px 2px black;
-
 }
 
 #menu{
-
 position:fixed;
-
-top:90px;
-
+top:110px;
 width:100%;
-
-text-align:center;
-
+display:flex;
+justify-content:center;
+gap:15px;
 }
 
 .small{
-
 width:120px;
-
-height:45px;
-
-background:gold;
-
+height:55px;
 border:none;
-
-border-radius:15px;
-
+border-radius:20px;
+background:gold;
 font-size:20px;
-
 font-weight:bold;
+}
 
-margin:5px;
-
+#playBtn{
+position:fixed;
+bottom:40px;
+left:50%;
+transform:translateX(-50%);
+width:220px;
+height:80px;
+border:none;
+border-radius:25px;
+background:gold;
+font-size:40px;
+font-weight:bold;
 }
 
 #tower{
 position:fixed;
-bottom:120px;
+bottom:140px;
 left:50%;
 transform:translateX(-50%);
 width:160px;
@@ -86,167 +79,20 @@ display:flex;
 flex-direction:column-reverse;
 align-items:center;
 }
+document.getElementById("playBtn").onclick=function(){
 
-.floor{
-margin-top:2px;
-flex-shrink:0;
+document.getElementById("menu").style.display="none";
 
-width:160px;
+document.getElementById("playBtn").style.display="none";
 
-height:70px;
-
-background:#0b4d78;
-
-border-top:4px solid #30a8da;
-
-border-bottom:4px solid #062942;
-
-
-position:relative;
-
-}
-
-.window{
-
-position:absolute;
-
-width:22px;
-
-height:30px;
-
-background:#ffe96b;
-
-top:18px;
-
-}
-
-#buildBtn{
-
-position:fixed;
-
-bottom:20px;
-
-left:50%;
-
-transform:translateX(-50%);
-
-width:180px;
-
-height:70px;
-
-background:gold;
-
-border:none;
-
-border-radius:20px;
-
-font-size:30px;
-
-font-weight:bold;
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div id="score">
-0
-</div>
-
-<div id="menu">
-
-<button
-class="small"
-id="home">
-HOME
-</button>
-
-<button
-class="small"
-id="badges">
-BADGES
-</button>
-
-</div>
-
-<div id="tower">
-</div>
-
-<button id="buildBtn">
-BUILD
-</button>
-
-<script>
-
-let score=0;
-
-let tower=
-document.getElementById(
-"tower"
-);
-
-let scoreBox=
-document.getElementById(
-"score"
-);
-
-function makeFloor(){
-
-let floor=
-document.createElement(
-"div"
-);
-
-floor.className=
-"floor";
-
-for(
-let i=0;
-i<4;
-i++
-){
-
-let w=
-document.createElement(
-"div"
-);
-
-w.className=
-"window";
-
-w.style.left=
-(15+i*35)+"px";
-
-floor.appendChild(
-w
-);
-
-}
-
-tower.appendChild(floor);
-
-}
-
-document
-.getElementById(
-"buildBtn"
-)
-.onclick=function(){
-
-score++;
-
-scoreBox.innerHTML=
-score;
-
-makeFloor();
+startGame();
 
 };
 
+function startGame(){
 
-</script>
+// Your existing game code goes here.
+// makeFloor(), spawning,
+// scoring, graphics, etc.
 
-</body>
-</html>
+}
