@@ -77,20 +77,20 @@ margin:5px;
 }
 
 #tower{
-
 position:fixed;
-
 bottom:120px;
-
 left:50%;
-
 transform:translateX(-50%);
-
 width:160px;
-
+display:flex;
+flex-direction:column-reverse;
+align-items:center;
 }
 
 .floor{
+margin-top:2px;
+flex-shrink:0;
+}
 
 width:160px;
 
@@ -102,7 +102,6 @@ border-top:4px solid #30a8da;
 
 border-bottom:4px solid #062942;
 
-margin-top:2px;
 
 position:relative;
 
@@ -228,8 +227,7 @@ w
 
 }
 
-tower.prepend(
-floor
+tower.appendChild(floor);
 );
 
 }
@@ -249,7 +247,6 @@ makeFloor();
 
 };
 
-makeFloor();
 
 </script>
 
